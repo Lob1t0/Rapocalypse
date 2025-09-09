@@ -12,8 +12,8 @@ public class MovimientoJugador2D : MonoBehaviour
 
     [Header("Raycast de suelo")]
     [SerializeField] private Vector2 offsetRay = new Vector2(0f, -0.5f);
-    [SerializeField] private float largoRay = 0.1f;
-    [SerializeField] private LayerMask capaSuelo = ~0;
+    [SerializeField] private float largoRay = 0.12f;
+    [SerializeField] private LayerMask capaSuelo = ~0;   // En el Inspector: selecciona SOLO la capa "Suelo"
 
     [Header("Calidad de salto")]
     [SerializeField] private float coyoteTime = 0.1f;
@@ -28,15 +28,18 @@ public class MovimientoJugador2D : MonoBehaviour
     [SerializeField] private Vector2 slideColliderOffset = new Vector2(0f, -0.2f);
 
     [Header("Animator (Triggers)")]
-    public Animator animator; // "Idle", "Walk", "Jump", "Slide"
+    public Animator animator; // Idle, Walk, Jump, Slide (Triggers)
+
+    [Header("Animator (Estado de caída opcional)")]
+    [SerializeField] private bool usarEstadoFall = true;
+    [SerializeField] private string nombreEstadoFall = "Fall";
+    [SerializeField] private float umbralCaida = -0.05f;
 
     [Header("Transiciones rápidas")]
     [SerializeField] private float snapBlend = 0.02f;
 
     [Header("Botones mando (PS)")]
-    [Tooltip("Saltar (PS: X/Cross). Por defecto Button1 porque en tu setup X disparaba el 1.")]
     [SerializeField] private KeyCode botonGamepadSaltar = KeyCode.JoystickButton1;
-    [Tooltip("Slide (PS: Square). Por defecto Button0 porque en tu setup Square disparaba el 0.")]
     [SerializeField] private KeyCode botonGamepadSlide  = KeyCode.JoystickButton0;
 
     // --- privados ---
@@ -66,7 +69,7 @@ public class MovimientoJugador2D : MonoBehaviour
     private Vector2 colSizeOri, colOffsetOri;
 
     // Animator hashes
-    private int stIdle, stWalk, stJump, stSlide;
+    private int stIdle, stWalk, stJump, stSlide, stFall;
 
     private void Awake()
     {
@@ -77,26 +80,34 @@ public class MovimientoJugador2D : MonoBehaviour
         boxCol = GetComponent<BoxCollider2D>();
         if (boxCol) { colSizeOri = boxCol.size; colOffsetOri = boxCol.offset; }
 
+        // Autovincula animator si está vacío
+        if (!animator) animator = GetComponent<Animator>();
+
         stIdle  = Animator.StringToHash("Idle");
         stWalk  = Animator.StringToHash("Walk");
         stJump  = Animator.StringToHash("Jump");
         stSlide = Animator.StringToHash("Slide");
+        stFall  = Animator.StringToHash(nombreEstadoFall);
+    }
+
+    private void Start()
+    {
+        if (!animator)
+            Debug.LogError($"[MovimientoJugador2D] No se encontró Animator en {name}");
+        else if (!animator.runtimeAnimatorController)
+            Debug.LogError($"[MovimientoJugador2D] El Animator de {name} no tiene un AnimatorController asignado");
     }
 
     private void Update()
     {
-        // AD + stick izquierdo (eje "Horizontal" del Input Manager)
         inputX = LeerHorizontal();
 
-        // SALTO: Space o X (Cross) del mando
         if (JumpPressed())
             tDesdeJump = 0f;
 
-        // SLIDE: Shift o Square del mando
         if (SlidePressed())
             pidoSlide = true;
 
-        // timers
         tDesdeSuelo += Time.deltaTime;
         tDesdeJump  += Time.deltaTime;
         if (slideCooldownTimer > 0f) slideCooldownTimer -= Time.deltaTime;
@@ -106,6 +117,13 @@ public class MovimientoJugador2D : MonoBehaviour
     {
         bool enSuelo = TocaSueloRaycast();
         if (enSuelo) tDesdeSuelo = 0f;
+
+        // ----------- FEED al Animator (clave para que Jump/Fall se mantengan) -----------
+        if (animator)
+        {
+            animator.SetBool("Grounded", enSuelo);
+            animator.SetFloat("VertSpeed", rb.linearVelocity.y);
+        }
 
         // ---------- SLIDE ----------
         if (!haciendoSlide && pidoSlide && enSuelo && slideCooldownTimer <= 0f)
@@ -128,7 +146,7 @@ public class MovimientoJugador2D : MonoBehaviour
         // ---------- SALTO ----------
         if (!haciendoSlide && !enAire && tDesdeSuelo <= coyoteTime && tDesdeJump <= jumpBuffer)
         {
-            enAire = true;                 // bloquea Walk/Idle
+            enAire = true;                 // bloquea Walk/Idle en el aire
             bloquearLocomocion = true;
 
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
@@ -138,6 +156,12 @@ public class MovimientoJugador2D : MonoBehaviour
             SnapTo(stJump);
 
             tDesdeJump = 999f;
+        }
+
+        // ---------- CAMBIO A CAÍDA (opcional) ----------
+        if (usarEstadoFall && enAire && rb.linearVelocity.y < umbralCaida)
+        {
+            SnapTo(stFall); // solo si existe ese estado en el Animator
         }
 
         // ---------- ATERRIZAJE ----------
@@ -171,7 +195,7 @@ public class MovimientoJugador2D : MonoBehaviour
             else if (!mov && estabaMov) { SnapIdle(); estabaMov = false; }
         }
 
-        // Fallback a Idle
+        // Fallback a Idle (en suelo, sin movimiento)
         if (enSuelo && Mathf.Abs(inputX) < 0.01f && !haciendoSlide && !enAire)
             SnapIdleOnNotIdle();
     }
@@ -179,41 +203,25 @@ public class MovimientoJugador2D : MonoBehaviour
     // ----------------- ENTRADAS -----------------
     private float LeerHorizontal()
     {
-        // teclado A/D
         float kb = 0f;
         if (Input.GetKey(KeyCode.A)) kb -= 1f;
         if (Input.GetKey(KeyCode.D)) kb += 1f;
 
-        // stick izquierdo
-        float stick = Input.GetAxis("Horizontal"); // -1..1
-
-        // si hay teclado, priorízalo
+        float stick = Input.GetAxis("Horizontal");
         return Mathf.Abs(kb) > 0.01f ? kb : stick;
     }
 
     private bool JumpPressed()
     {
-        // Teclado: Space (si quieres quitarlo, borra esta línea)
-        if (Input.GetKeyDown(KeyCode.Space))
-            return true;
-
-        // Mando: X / Cross (South) -> por defecto JoystickButton1 en tu setup
-        if (Input.GetKeyDown(botonGamepadSaltar))
-            return true;
-
+        if (Input.GetKeyDown(KeyCode.Space)) return true;
+        if (Input.GetKeyDown(botonGamepadSaltar)) return true;
         return false;
     }
 
     private bool SlidePressed()
     {
-        // Teclado: Shift (si no lo quieres, borra esta línea)
-        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
-            return true;
-
-        // Mando: Square (West) -> por defecto JoystickButton0 en tu setup
-        if (Input.GetKeyDown(botonGamepadSlide))
-            return true;
-
+        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)) return true;
+        if (Input.GetKeyDown(botonGamepadSlide)) return true;
         return false;
     }
 
@@ -274,9 +282,14 @@ public class MovimientoJugador2D : MonoBehaviour
     }
 
     // ----------------- ANIM UTILS -----------------
+    private bool HasController()
+    {
+        return animator && animator.runtimeAnimatorController != null;
+    }
+
     private void DispararTrigger(string nombre)
     {
-        if (!animator) return;
+        if (!HasController()) return;
         animator.ResetTrigger("Idle");
         animator.ResetTrigger("Walk");
         animator.ResetTrigger("Jump");
@@ -286,7 +299,7 @@ public class MovimientoJugador2D : MonoBehaviour
 
     private void SnapTo(int stateHash)
     {
-        if (!animator) return;
+        if (!HasController()) return;
         animator.CrossFadeInFixedTime(stateHash, snapBlend, 0, 0f);
     }
 
@@ -298,7 +311,7 @@ public class MovimientoJugador2D : MonoBehaviour
 
     private void SnapIdleOnNotIdle()
     {
-        if (!animator) return;
+        if (!HasController()) return;
         var info = animator.GetCurrentAnimatorStateInfo(0);
         if (info.shortNameHash != stIdle)
             SnapIdle();
