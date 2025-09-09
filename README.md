@@ -28,8 +28,8 @@ GitHub Desktop facilita la gestión de repositorios y ramas sin necesidad de usa
 #### **Usando GitHub Desktop**
 1. Abre **GitHub Desktop**.
 2. En el menú superior, ve a **File → Clone Repository**.
-3. En la pestaña **URL**, pega el enlace del proyecto: https://github.com/tu-usuario/Rapocalypse.git
-4. Selecciona la carpeta local donde quieres guardar el proyecto.
-5. Haz clic en **Clone**.
+3. En la pestaña **URL**, pega el enlace del proyecto: https://github.com/Lob1t0/Rapocalypse 
+5. Selecciona la carpeta local donde quieres guardar el proyecto.
+6. Haz clic en **Clone**.
 
 
