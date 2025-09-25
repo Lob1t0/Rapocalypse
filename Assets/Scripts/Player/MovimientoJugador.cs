@@ -36,7 +36,6 @@ public class MovimientoJugador2D : MonoBehaviour
     [SerializeField] private float fuerzaSaltoParedY = 12f;
     private bool enPared;
     private bool deslizando;
-    private bool saltandoPared;
 
     [Header("Animator (Triggers)")]
     public Animator animator;
@@ -180,7 +179,6 @@ public class MovimientoJugador2D : MonoBehaviour
         if (enAire && enSuelo && rb.linearVelocity.y <= 0.01f)
         {
             enAire = false;
-            saltandoPared = false;
 
             if (Mathf.Abs(inputX) > 0.01f)
             {
@@ -220,7 +218,6 @@ public class MovimientoJugador2D : MonoBehaviour
     {
         float dir = mirandoDerecha ? -1f : 1f;
         rb.linearVelocity = new Vector2(fuerzaSaltoParedX * dir, fuerzaSaltoParedY);
-        saltandoPared = true;
         enAire = true;
 
         DispararTrigger("Jump");
