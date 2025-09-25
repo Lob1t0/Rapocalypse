@@ -217,7 +217,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: fa4b86231afa77c45afa2e845b0a76c7, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -552,7 +552,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: fa4b86231afa77c45afa2e845b0a76c7, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -707,7 +707,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocidad: 6
   suavizado: 0.05
-  fuerzaSalto: 5
+  fuerzaSalto: 6
   offsetRay: {x: 0, y: -0.78}
   largoRay: 0.1
   capaSuelo:
@@ -719,8 +719,6 @@ MonoBehaviour:
   slideFuerza: 12
   slideCooldown: 0.5
   ajustarColliderEnSlide: 1
-  slideColliderSize: {x: 0.7, y: 0.6}
-  slideColliderOffset: {x: 0, y: -0.2}
   animator: {fileID: 1126172249}
   usarEstadoFall: 1
   nombreEstadoFall: Fall
@@ -728,6 +726,9 @@ MonoBehaviour:
   snapBlend: 0.02
   botonGamepadSaltar: 331
   botonGamepadSlide: 330
+  wallSlideSpeed: -2
+  offsetRayWall: {x: 0.5, y: 0}
+  largoRayWall: 0.2
 --- !u!95 &1126172249
 Animator:
   serializedVersion: 7
@@ -811,7 +812,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -821,7 +822,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!212 &1126172252
 SpriteRenderer:
@@ -975,7 +976,7 @@ Transform:
   m_GameObject: {fileID: 1127352776}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 15.21, y: 0.85, z: 0}
+  m_LocalPosition: {x: 15.27, y: 1.53, z: 0}
   m_LocalScale: {x: 10.587, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -991,7 +992,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: fa4b86231afa77c45afa2e845b0a76c7, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1248,7 +1249,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: fa4b86231afa77c45afa2e845b0a76c7, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1382,7 +1383,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: fa4b86231afa77c45afa2e845b0a76c7, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
