@@ -24,8 +24,6 @@ public class MovimientoJugador2D : MonoBehaviour
     [SerializeField] private float slideFuerza = 12f;
     [SerializeField] private float slideCooldown = 0.5f;
     [SerializeField] private bool ajustarColliderEnSlide = true;
-    [SerializeField] private Vector2 slideColliderSize = new Vector2(0.7f, 0.6f);
-    [SerializeField] private Vector2 slideColliderOffset = new Vector2(0f, -0.2f);
 
     [Header("Animator (Triggers)")]
     public Animator animator; // Idle, Walk, Jump, Slide (Triggers)
@@ -243,8 +241,8 @@ public class MovimientoJugador2D : MonoBehaviour
 
         if (ajustarColliderEnSlide && boxCol)
         {
-            boxCol.size = slideColliderSize;
-            boxCol.offset = slideColliderOffset;
+            boxCol.size = new Vector2(boxCol.size.x, 0.75f);
+            boxCol.offset = new Vector2(colOffsetOri.x, -0.35f);
         }
     }
 
