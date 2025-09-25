@@ -13,22 +13,33 @@ public class MovimientoJugador2D : MonoBehaviour
     [Header("Raycast de suelo")]
     [SerializeField] private Vector2 offsetRay = new Vector2(0f, -0.5f);
     [SerializeField] private float largoRay = 0.12f;
-    [SerializeField] private LayerMask capaSuelo = ~0;   // En el Inspector: selecciona SOLO la capa "Suelo"
+    [SerializeField] private LayerMask capaSuelo;
+
+    [Header("Paredes")]
+    [SerializeField] private Transform controladorPared;
+    [SerializeField] private Vector2 dimensionesCajaPared = new Vector2(0.2f, 1f);
+    [SerializeField] private LayerMask capaPared;
 
     [Header("Calidad de salto")]
     [SerializeField] private float coyoteTime = 0.1f;
     [SerializeField] private float jumpBuffer = 0.1f;
 
-    [Header("Slide")]
+    [Header("Slide en suelo")]
     [SerializeField] private float slideDuracion = 0.25f;
     [SerializeField] private float slideFuerza = 12f;
     [SerializeField] private float slideCooldown = 0.5f;
     [SerializeField] private bool ajustarColliderEnSlide = true;
-    [SerializeField] private Vector2 slideColliderSize = new Vector2(0.7f, 0.6f);
-    [SerializeField] private Vector2 slideColliderOffset = new Vector2(0f, -0.2f);
+
+    [Header("Wall Slide / Wall Jump")]
+    [SerializeField] private float velocidadDeslizar = 2f;
+    [SerializeField] private float fuerzaSaltoParedX = 8f;
+    [SerializeField] private float fuerzaSaltoParedY = 12f;
+    private bool enPared;
+    private bool deslizando;
+    private bool saltandoPared;
 
     [Header("Animator (Triggers)")]
-    public Animator animator; // Idle, Walk, Jump, Slide (Triggers)
+    public Animator animator;
 
     [Header("Animator (Estado de caída opcional)")]
     [SerializeField] private bool usarEstadoFall = true;
@@ -40,7 +51,7 @@ public class MovimientoJugador2D : MonoBehaviour
 
     [Header("Botones mando (PS)")]
     [SerializeField] private KeyCode botonGamepadSaltar = KeyCode.JoystickButton1;
-    [SerializeField] private KeyCode botonGamepadSlide  = KeyCode.JoystickButton0;
+    [SerializeField] private KeyCode botonGamepadSlide = KeyCode.JoystickButton0;
 
     // --- privados ---
     private Rigidbody2D rb;
@@ -52,14 +63,13 @@ public class MovimientoJugador2D : MonoBehaviour
 
     // Timers
     private float tDesdeSuelo = 0f;
-    private float tDesdeJump  = 999f;
+    private float jumpPressedRemember = 0f;
 
     // Aire / locomoción
     private bool enAire = false;
-    private bool bloquearLocomocion = false;
     private bool estabaMov = false;
 
-    // Slide
+    // Slide en suelo
     private bool pidoSlide = false;
     private bool haciendoSlide = false;
     private float slideTimer = 0f;
@@ -80,22 +90,13 @@ public class MovimientoJugador2D : MonoBehaviour
         boxCol = GetComponent<BoxCollider2D>();
         if (boxCol) { colSizeOri = boxCol.size; colOffsetOri = boxCol.offset; }
 
-        // Autovincula animator si está vacío
         if (!animator) animator = GetComponent<Animator>();
 
-        stIdle  = Animator.StringToHash("Idle");
-        stWalk  = Animator.StringToHash("Walk");
-        stJump  = Animator.StringToHash("Jump");
+        stIdle = Animator.StringToHash("Idle");
+        stWalk = Animator.StringToHash("Walk");
+        stJump = Animator.StringToHash("Jump");
         stSlide = Animator.StringToHash("Slide");
-        stFall  = Animator.StringToHash(nombreEstadoFall);
-    }
-
-    private void Start()
-    {
-        if (!animator)
-            Debug.LogError($"[MovimientoJugador2D] No se encontró Animator en {name}");
-        else if (!animator.runtimeAnimatorController)
-            Debug.LogError($"[MovimientoJugador2D] El Animator de {name} no tiene un AnimatorController asignado");
+        stFall = Animator.StringToHash(nombreEstadoFall);
     }
 
     private void Update()
@@ -103,13 +104,13 @@ public class MovimientoJugador2D : MonoBehaviour
         inputX = LeerHorizontal();
 
         if (JumpPressed())
-            tDesdeJump = 0f;
+            jumpPressedRemember = jumpBuffer;
 
         if (SlidePressed())
             pidoSlide = true;
 
         tDesdeSuelo += Time.deltaTime;
-        tDesdeJump  += Time.deltaTime;
+        if (jumpPressedRemember > 0) jumpPressedRemember -= Time.deltaTime;
         if (slideCooldownTimer > 0f) slideCooldownTimer -= Time.deltaTime;
     }
 
@@ -118,14 +119,22 @@ public class MovimientoJugador2D : MonoBehaviour
         bool enSuelo = TocaSueloRaycast();
         if (enSuelo) tDesdeSuelo = 0f;
 
-        // ----------- FEED al Animator (clave para que Jump/Fall se mantengan) -----------
-        if (animator)
-        {
-            animator.SetBool("Grounded", enSuelo);
-            animator.SetFloat("VertSpeed", rb.linearVelocity.y);
-        }
+        // Detectar pared
+        enPared = Physics2D.OverlapBox(controladorPared.position, dimensionesCajaPared, 0f, capaPared);
 
-        // ---------- SLIDE ----------
+        // Wall Slide
+        deslizando = !enSuelo
+                     && enPared
+                     && Mathf.Abs(inputX) > 0.01f
+                     && Mathf.Sign(inputX) == (mirandoDerecha ? 1 : -1)
+                     && rb.linearVelocity.y < -0.1f;
+
+        if (animator) animator.SetBool("WallSlide", deslizando);
+
+        if (deslizando)
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Clamp(rb.linearVelocity.y, -velocidadDeslizar, float.MaxValue));
+
+        // Slide en suelo
         if (!haciendoSlide && pidoSlide && enSuelo && slideCooldownTimer <= 0f)
             IniciarSlide();
         pidoSlide = false;
@@ -136,39 +145,42 @@ public class MovimientoJugador2D : MonoBehaviour
             if (slideTimer <= 0f) TerminarSlide();
         }
 
-        // ---------- MOVIMIENTO ----------
+        // Movimiento (activo incluso en aire o wall jump)
         if (!haciendoSlide)
         {
             Vector2 velObjetivo = new Vector2(inputX * velocidad, rb.linearVelocity.y);
             rb.linearVelocity = Vector2.SmoothDamp(rb.linearVelocity, velObjetivo, ref velRef, suavizado);
         }
 
-        // ---------- SALTO ----------
-        if (!haciendoSlide && !enAire && tDesdeSuelo <= coyoteTime && tDesdeJump <= jumpBuffer)
+        // Salto normal
+        if (!haciendoSlide && !enAire && tDesdeSuelo <= coyoteTime && jumpPressedRemember > 0)
         {
-            enAire = true;                 // bloquea Walk/Idle en el aire
-            bloquearLocomocion = true;
-
+            enAire = true;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
             rb.AddForce(Vector2.up * fuerzaSalto, ForceMode2D.Impulse);
 
             DispararTrigger("Jump");
             SnapTo(stJump);
 
-            tDesdeJump = 999f;
+            jumpPressedRemember = 0;
         }
 
-        // ---------- CAMBIO A CAÍDA (opcional) ----------
-        if (usarEstadoFall && enAire && rb.linearVelocity.y < umbralCaida)
+        // Wall Jump
+        if (jumpPressedRemember > 0 && deslizando)
         {
-            SnapTo(stFall); // solo si existe ese estado en el Animator
+            WallJump();
+            jumpPressedRemember = 0;
         }
 
-        // ---------- ATERRIZAJE ----------
+        // Estado de caída
+        if (usarEstadoFall && enAire && rb.linearVelocity.y < umbralCaida)
+            SnapTo(stFall);
+
+        // Aterrizaje
         if (enAire && enSuelo && rb.linearVelocity.y <= 0.01f)
         {
             enAire = false;
-            bloquearLocomocion = false;
+            saltandoPared = false;
 
             if (Mathf.Abs(inputX) > 0.01f)
             {
@@ -183,24 +195,39 @@ public class MovimientoJugador2D : MonoBehaviour
             }
         }
 
-        // ---------- FLIP ----------
-        if (inputX > 0.01f && !mirandoDerecha) Girar();
-        else if (inputX < -0.01f && mirandoDerecha) Girar();
+        // Flip (deshabilitado durante slide en suelo)
+        if (!haciendoSlide) 
+        {
+            if (inputX > 0.01f && !mirandoDerecha) Girar();
+            else if (inputX < -0.01f && mirandoDerecha) Girar();
+        }
 
-        // ---------- WALK / IDLE ----------
-        if (!bloquearLocomocion && !enAire && !haciendoSlide)
+
+        // Idle/Walk
+        if (!enAire && !haciendoSlide)
         {
             bool mov = Mathf.Abs(inputX) > 0.01f && enSuelo;
             if (mov && !estabaMov) { DispararTrigger("Walk"); SnapTo(stWalk); estabaMov = true; }
             else if (!mov && estabaMov) { SnapIdle(); estabaMov = false; }
         }
 
-        // Fallback a Idle (en suelo, sin movimiento)
         if (enSuelo && Mathf.Abs(inputX) < 0.01f && !haciendoSlide && !enAire)
             SnapIdleOnNotIdle();
     }
 
-    // ----------------- ENTRADAS -----------------
+    // Wall Jump
+    private void WallJump()
+    {
+        float dir = mirandoDerecha ? -1f : 1f;
+        rb.linearVelocity = new Vector2(fuerzaSaltoParedX * dir, fuerzaSaltoParedY);
+        saltandoPared = true;
+        enAire = true;
+
+        DispararTrigger("Jump");
+        SnapTo(stJump);
+    }
+
+    // Entradas
     private float LeerHorizontal()
     {
         float kb = 0f;
@@ -225,16 +252,14 @@ public class MovimientoJugador2D : MonoBehaviour
         return false;
     }
 
-    // ----------------- SLIDE -----------------
+    // Slide en suelo
     private void IniciarSlide()
     {
         haciendoSlide = true;
         slideTimer = slideDuracion;
         slideCooldownTimer = slideCooldown;
-        bloquearLocomocion = true;
 
         float dir = mirandoDerecha ? 1f : -1f;
-
         rb.linearVelocity = Vector2.zero;
         rb.AddForce(new Vector2(dir * slideFuerza, 0f), ForceMode2D.Impulse);
 
@@ -243,15 +268,14 @@ public class MovimientoJugador2D : MonoBehaviour
 
         if (ajustarColliderEnSlide && boxCol)
         {
-            boxCol.size = slideColliderSize;
-            boxCol.offset = slideColliderOffset;
+            boxCol.size = new Vector2(boxCol.size.x, 0.75f);
+            boxCol.offset = new Vector2(colOffsetOri.x, -0.35f);
         }
     }
 
     private void TerminarSlide()
     {
         haciendoSlide = false;
-        bloquearLocomocion = false;
 
         if (ajustarColliderEnSlide && boxCol)
         {
@@ -272,7 +296,7 @@ public class MovimientoJugador2D : MonoBehaviour
         }
     }
 
-    // ----------------- SUELO -----------------
+    // Suelo
     private bool TocaSueloRaycast()
     {
         Vector2 origen = (Vector2)transform.position + offsetRay;
@@ -281,11 +305,8 @@ public class MovimientoJugador2D : MonoBehaviour
         return hit.collider != null;
     }
 
-    // ----------------- ANIM UTILS -----------------
-    private bool HasController()
-    {
-        return animator && animator.runtimeAnimatorController != null;
-    }
+    // Anim Utils
+    private bool HasController() => animator && animator.runtimeAnimatorController != null;
 
     private void DispararTrigger(string nombre)
     {
@@ -317,7 +338,7 @@ public class MovimientoJugador2D : MonoBehaviour
             SnapIdle();
     }
 
-    // ----------------- VARIOS -----------------
+    // Varios
     private void Girar()
     {
         mirandoDerecha = !mirandoDerecha;
@@ -326,8 +347,16 @@ public class MovimientoJugador2D : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        // Suelo
         Gizmos.color = Color.cyan;
         Vector3 o = transform.position + (Vector3)offsetRay;
         Gizmos.DrawLine(o, o + Vector3.down * largoRay);
+
+        // Pared
+        if (controladorPared != null)
+        {
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawWireCube(controladorPared.position, dimensionesCajaPared);
+        }
     }
 }

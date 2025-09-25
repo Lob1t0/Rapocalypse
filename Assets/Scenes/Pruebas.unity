@@ -217,7 +217,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: fa4b86231afa77c45afa2e845b0a76c7, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -552,7 +552,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: fa4b86231afa77c45afa2e845b0a76c7, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -707,20 +707,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocidad: 6
   suavizado: 0.05
-  fuerzaSalto: 5
+  fuerzaSalto: 6
   offsetRay: {x: 0, y: -0.78}
   largoRay: 0.1
   capaSuelo:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 8
+  controladorPared: {fileID: 1949715187}
+  dimensionesCajaPared: {x: 0.1, y: 1.06}
+  capaPared:
+    serializedVersion: 2
+    m_Bits: 8
   coyoteTime: 0.1
   jumpBuffer: 0.1
   slideDuracion: 0.25
   slideFuerza: 12
   slideCooldown: 0.5
   ajustarColliderEnSlide: 1
-  slideColliderSize: {x: 0.7, y: 0.6}
-  slideColliderOffset: {x: 0, y: -0.2}
+  velocidadDeslizar: 2
+  fuerzaSaltoParedX: 4
+  fuerzaSaltoParedY: 6
   animator: {fileID: 1126172249}
   usarEstadoFall: 1
   nombreEstadoFall: Fall
@@ -811,7 +817,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -821,7 +827,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!212 &1126172252
 SpriteRenderer:
@@ -890,7 +896,8 @@ Transform:
   m_LocalPosition: {x: -7.770064, y: -3.02, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1949715187}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1127352776
@@ -975,7 +982,7 @@ Transform:
   m_GameObject: {fileID: 1127352776}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 15.21, y: 0.85, z: 0}
+  m_LocalPosition: {x: 15.27, y: 1.53, z: 0}
   m_LocalScale: {x: 10.587, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -991,7 +998,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: fa4b86231afa77c45afa2e845b0a76c7, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1150,6 +1157,37 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &1949715186
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1949715187}
+  m_Layer: 0
+  m_Name: controladorPared
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1949715187
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1949715186}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.529, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1126172253}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2021699197
 GameObject:
   m_ObjectHideFlags: 0
@@ -1248,7 +1286,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: fa4b86231afa77c45afa2e845b0a76c7, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1382,7 +1420,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: fa4b86231afa77c45afa2e845b0a76c7, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
