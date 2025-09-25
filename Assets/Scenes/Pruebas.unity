@@ -712,13 +712,21 @@ MonoBehaviour:
   largoRay: 0.1
   capaSuelo:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 8
+  controladorPared: {fileID: 1949715187}
+  dimensionesCajaPared: {x: 0.1, y: 1.06}
+  capaPared:
+    serializedVersion: 2
+    m_Bits: 8
   coyoteTime: 0.1
   jumpBuffer: 0.1
   slideDuracion: 0.25
   slideFuerza: 12
   slideCooldown: 0.5
   ajustarColliderEnSlide: 1
+  velocidadDeslizar: 2
+  fuerzaSaltoParedX: 4
+  fuerzaSaltoParedY: 6
   animator: {fileID: 1126172249}
   usarEstadoFall: 1
   nombreEstadoFall: Fall
@@ -726,9 +734,6 @@ MonoBehaviour:
   snapBlend: 0.02
   botonGamepadSaltar: 331
   botonGamepadSlide: 330
-  wallSlideSpeed: -2
-  offsetRayWall: {x: 0.5, y: 0}
-  largoRayWall: 0.2
 --- !u!95 &1126172249
 Animator:
   serializedVersion: 7
@@ -891,7 +896,8 @@ Transform:
   m_LocalPosition: {x: -7.770064, y: -3.02, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1949715187}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1127352776
@@ -1151,6 +1157,37 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &1949715186
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1949715187}
+  m_Layer: 0
+  m_Name: controladorPared
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1949715187
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1949715186}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.529, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1126172253}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2021699197
 GameObject:
   m_ObjectHideFlags: 0
