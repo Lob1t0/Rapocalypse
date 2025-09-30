@@ -78,7 +78,7 @@ public class MovimientoJugador2D : MonoBehaviour
     private Vector2 colSizeOri, colOffsetOri;
 
     // Animator hashes
-    private int stIdle, stWalk, stJump, stSlide, stFall;
+    private int stIdle, stWalk, stJump, stSlide, stFall, stFallBool;
 
     private void Awake()
     {
@@ -96,6 +96,7 @@ public class MovimientoJugador2D : MonoBehaviour
         stJump = Animator.StringToHash("Jump");
         stSlide = Animator.StringToHash("Slide");
         stFall = Animator.StringToHash(nombreEstadoFall);
+        stFallBool = Animator.StringToHash("Caida");
     }
 
     private void Update()
@@ -129,6 +130,10 @@ public class MovimientoJugador2D : MonoBehaviour
                      && rb.linearVelocity.y < -0.1f;
 
         if (animator) animator.SetBool("WallSlide", deslizando);
+
+        // Estado de caída
+        bool enCaida = !enSuelo && rb.linearVelocity.y < umbralCaida;
+        animator.SetBool("Caida", enCaida);
 
         if (deslizando)
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Clamp(rb.linearVelocity.y, -velocidadDeslizar, float.MaxValue));
