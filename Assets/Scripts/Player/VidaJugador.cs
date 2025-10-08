@@ -1,42 +1,103 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class VidaJugador : MonoBehaviour
 {
-    [Header("Vida del jugador")]
-    [SerializeField] private int vidaMax = 4; // Máximo 4 golpes
-    private int vidaActual;
+    [Header("Configuración de vida")]
+    [SerializeField] private int vidasMax = 4;
+    private int vidasActuales;
+
+    [Header("Respawn")]
+    [SerializeField] private float limiteY = -8.43f;
+    [SerializeField] private Vector3 posicionRespawn = new Vector3(-17.39f, -3.02f, 0f);
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI textoVida;
 
-    private void Start()
+    [Header("Invulnerabilidad")]
+    [SerializeField] private float tiempoInvulnerable = 1.2f;
+    private bool invulnerable = false;
+
+    void Start()
     {
-        vidaActual = vidaMax;
+        vidasActuales = vidasMax;
         ActualizarUI();
     }
 
-    public void RecibirDaño(int daño)
+    void Update()
     {
-        vidaActual -= daño;
-        vidaActual = Mathf.Clamp(vidaActual, 0, vidaMax);
+        // Detecta caída fuera del mapa
+        if (transform.position.y < limiteY)
+        {
+            PerderVidaPorCaida();
+        }
+    }
 
+    // ------------------------------
+    //     SISTEMA DE DAÑO
+    // ------------------------------
+
+    public void RecibirDanioEnemigo()
+    {
+        if (invulnerable) return;
+
+        vidasActuales = Mathf.Max(vidasActuales - 1, 0);
         ActualizarUI();
 
-        if (vidaActual <= 0)
+        if (vidasActuales <= 0)
         {
-            Morir();
+            ReiniciarEscena();
+            return;
         }
+
+        StartCoroutine(InvulnerabilidadTemporal());
+    }
+
+    private void PerderVidaPorCaida()
+    {
+        if (invulnerable) return;
+
+        // Si ya no le quedan vidas, reinicia
+        if (vidasActuales <= 1)
+        {
+            vidasActuales = 0;
+            ActualizarUI();
+            ReiniciarEscena();
+        }
+        else
+        {
+            vidasActuales = Mathf.Max(vidasActuales - 1, 0);
+            ActualizarUI();
+            transform.position = posicionRespawn;
+            StartCoroutine(InvulnerabilidadTemporal());
+        }
+    }
+
+    private void ReiniciarEscena()
+    {
+        Debug.Log("Jugador sin vidas. Reiniciando escena...");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void ActualizarUI()
     {
-        textoVida.text = "Vida: " + vidaActual + "/" + vidaMax;
+        if (textoVida != null)
+            textoVida.text = $"Vida: {vidasActuales}/{vidasMax}";
     }
 
-    private void Morir()
+    private System.Collections.IEnumerator InvulnerabilidadTemporal()
     {
-        Debug.Log("El jugador murió.");
-        // Aquí puedes poner animación de muerte, reinicio de nivel, etc.
+        invulnerable = true;
+        yield return new WaitForSeconds(tiempoInvulnerable);
+        invulnerable = false;
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemigo"))
+        {
+            RecibirDanioEnemigo();
+        }
     }
 }
