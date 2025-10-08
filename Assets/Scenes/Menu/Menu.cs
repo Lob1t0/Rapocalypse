@@ -82,7 +82,7 @@ public class MenuController : MonoBehaviour
             var text = botones[i].GetComponentInChildren<TMPro.TextMeshProUGUI>();
             bool seleccionado = (i == indiceActual);
             text.color = seleccionado ? colorSeleccionado : colorNormal;
-            text.fontSize = seleccionado ? 90 : 80;
+            text.fontSize = seleccionado ? 40 : 30;
         }
 
         botones[indiceActual].Select();
