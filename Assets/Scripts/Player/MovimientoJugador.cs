@@ -50,7 +50,7 @@ public class MovimientoJugador2D : MonoBehaviour
 
     [Header("Botones mando (PS)")]
     [SerializeField] private KeyCode botonGamepadSaltar = KeyCode.JoystickButton1;
-    [SerializeField] private KeyCode botonGamepadSlide = KeyCode.JoystickButton0;
+    [SerializeField] private KeyCode botonGamepadSlide = KeyCode.JoystickButton2;
 
     // --- privados ---
     private Rigidbody2D rb;
