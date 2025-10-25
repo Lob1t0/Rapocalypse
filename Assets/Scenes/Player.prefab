@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 5672435435843024226}
   - component: {fileID: 6884279600212238514}
   - component: {fileID: 7161808803342666690}
+  - component: {fileID: 3407505576182251919}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 589864657825442750}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.770064, y: -3.02, z: 0}
+  m_LocalPosition: {x: -17.39, y: -3.02, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -83,7 +84,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 2237285443321258136, guid: 53524a3ec1cb49e4fab95fb4ffa1c6a7, type: 3}
+  m_Sprite: {fileID: -59082903868852656, guid: 6de945cc6c0dcb941b856c0376120759, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -159,7 +160,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1.5}
+    oldSize: {x: 1.0888889, y: 1.7333333}
     newSize: {x: 1, y: 1.5}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -204,8 +205,8 @@ MonoBehaviour:
   velocidad: 6
   suavizado: 0.05
   fuerzaSalto: 6
-  offsetRay: {x: 0, y: -0.78}
-  largoRay: 0.1
+  offsetRay: {x: 0, y: -0.75}
+  largoRay: 0.05
   capaSuelo:
     serializedVersion: 2
     m_Bits: 8
@@ -229,7 +230,7 @@ MonoBehaviour:
   umbralCaida: -0.05
   snapBlend: 0.02
   botonGamepadSaltar: 331
-  botonGamepadSlide: 330
+  botonGamepadSlide: 332
 --- !u!114 &7161808803342666690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,6 +248,23 @@ MonoBehaviour:
   fireRate: 0.2
   escala: 1
   esJugador: 1
+--- !u!114 &3407505576182251919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 589864657825442750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69c7b3feb8a0d944f955c11b4ad43752, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vidasMax: 4
+  limiteY: -8.43
+  posicionRespawn: {x: -17.39, y: -3.02, z: 0}
+  textoVida: {fileID: 0}
+  tiempoInvulnerable: 1.2
 --- !u!1 &4488879779787539978
 GameObject:
   m_ObjectHideFlags: 0
