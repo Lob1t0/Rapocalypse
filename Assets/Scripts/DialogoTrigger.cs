@@ -18,13 +18,21 @@ public class DialogoTrigger2D : MonoBehaviour
     [SerializeField] private float tiempoAntesDeCerrar = 2f;
     [SerializeField] private KeyCode teclaInteraccion = KeyCode.E;
 
+    [Header("Botones mando (PS)")]
+    [SerializeField] private KeyCode botonGamepadInteraccion = KeyCode.JoystickButton0;
+    // 🔹 PS: Cuadrado = Button2   |  (Button0 = X, Button1 = Círculo, Button2 = Cuadrado, Button3 = Triángulo)
+
     private int indiceLinea = 0;
     private bool jugadorDentro = false;
     private bool mostrando = false;
 
     private void Update()
     {
-        if (jugadorDentro && Input.GetKeyDown(teclaInteraccion))
+        // ✅ Detectar interacción por teclado o por mando
+        bool presionoInteraccion =
+            Input.GetKeyDown(teclaInteraccion) || Input.GetKeyDown(botonGamepadInteraccion);
+
+        if (jugadorDentro && presionoInteraccion)
         {
             if (!panelDialogo.activeSelf && !mostrando)
             {
@@ -85,7 +93,7 @@ public class DialogoTrigger2D : MonoBehaviour
             yield return new WaitForSeconds(tiempoEntreLetras);
         }
 
-        // Esperar 2 s después de terminar el texto
+        // Esperar unos segundos después de escribir
         yield return new WaitForSeconds(tiempoAntesDeCerrar);
 
         // Cerrar el panel de forma segura
@@ -98,7 +106,7 @@ public class DialogoTrigger2D : MonoBehaviour
         indiceLinea = 0;
         mostrando = false;
 
-        // Si el jugador sigue dentro, vuelve a mostrar el mensaje “Presiona E”
+        // Si el jugador sigue dentro, vuelve a mostrar el texto "Presiona E"
         if (jugadorDentro && textoInteraccion != null)
             textoInteraccion.SetActive(true);
     }
