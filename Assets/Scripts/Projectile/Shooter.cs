@@ -15,17 +15,28 @@ public class Shooter : MonoBehaviour
     [Header("Input System")]
     [SerializeField] private PlayerInput playerInput;
 
+    // Vibración mando
+    [Header("Vibración (máxima potencia)")]
+    [SerializeField] private float duracionVibracion = 0.5f;
+
+    // --- Cámara ---
+    [Header("Camera Shake")]
+    [SerializeField] private Camara camaraShake; // arrástrala en el Inspector si quieres
+    [SerializeField] private float shakeDuracion = 0.10f;
+    [SerializeField] private float shakeAmplitud = 0.18f;
+    [SerializeField] private float shakeFrecuencia = 32f;
+
     private float fireCooldown = 0f;
     private InputAction attackAction;
-
-    // Vibración
-    [Header("Vibración (máxima potencia)")]
-    [SerializeField] private float duracionVibracion = 0.8f;
 
     private void Awake()
     {
         if (playerInput == null)
             playerInput = GetComponent<PlayerInput>();
+
+        // Si no está asignada, intenta encontrar la cámara principal
+        if (camaraShake == null && Camera.main != null)
+            camaraShake = Camera.main.GetComponent<Camara>();
     }
 
     private void OnEnable()
@@ -89,13 +100,24 @@ public class Shooter : MonoBehaviour
 
         bala.GetComponent<Proyectil>().Lanzar(dir, proyectilVelocidad);
 
-        // Vibración
+        // Vibración del mando
         ActivarVibracionFuerte();
+
+        // Sacudir cámara
+        if (camaraShake != null)
+        {
+            camaraShake.Shake(shakeDuracion, shakeAmplitud, shakeFrecuencia);
+        }
+        else
+        {
+            // Intento tardío (por si la cámara aún no estaba lista)
+            var cam = Camera.main ? Camera.main.GetComponent<Camara>() : null;
+            if (cam != null) cam.Shake(shakeDuracion, shakeAmplitud, shakeFrecuencia);
+        }
     }
 
     private async void ActivarVibracionFuerte()
     {
-        // Detectar el mando
         var mando = Gamepad.current;
 
         if (mando == null)
@@ -104,13 +126,8 @@ public class Shooter : MonoBehaviour
             return;
         }
 
-        Debug.Log($"🎮 Mando detectado: {mando.displayName}");
-
-        // Activar vibración máxima
-        mando.SetMotorSpeeds(1f, 1f);
-        Debug.Log("🔥 Vibración forzada al 100%");
+        mando.SetMotorSpeeds(0.4f, 0.4f);
         await System.Threading.Tasks.Task.Delay((int)(duracionVibracion * 1000));
-
         mando.SetMotorSpeeds(0f, 0f);
     }
 }

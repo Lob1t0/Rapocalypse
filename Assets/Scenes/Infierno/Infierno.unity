@@ -542,7 +542,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03da74c7fa588c44ba21dccdeb17053c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1676615200}
+  player: {fileID: 0}
   "distanciaDa\xF1o": 1.2
   tiempoInvulnerable: 1
   vidasMax: 4
@@ -943,7 +943,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03da74c7fa588c44ba21dccdeb17053c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1676615200}
+  player: {fileID: 0}
   "distanciaDa\xF1o": 1.2
   tiempoInvulnerable: 1
   vidasMax: 4
@@ -1099,73 +1099,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 766d54df31ea74341960d89edc474238, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jugador: {fileID: 1676615200}
+  jugador: {fileID: 1196593049}
   suavizado: 0.15
   offset: {x: 0, y: 1, z: -10}
   limiteMinX: -168
   limiteMaxX: 168
   offsetaltura: 0
---- !u!1001 &593152808
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 589864657825442750, guid: 9953745beb6e8534a80047b94181b75d, type: 3}
-      propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 3407505576182251919, guid: 9953745beb6e8534a80047b94181b75d, type: 3}
-      propertyPath: textoVida
-      value: 
-      objectReference: {fileID: 610046499}
-    - target: {fileID: 7319359411138328482, guid: 9953745beb6e8534a80047b94181b75d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -17.39
-      objectReference: {fileID: 0}
-    - target: {fileID: 7319359411138328482, guid: 9953745beb6e8534a80047b94181b75d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -3.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 7319359411138328482, guid: 9953745beb6e8534a80047b94181b75d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7319359411138328482, guid: 9953745beb6e8534a80047b94181b75d, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7319359411138328482, guid: 9953745beb6e8534a80047b94181b75d, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7319359411138328482, guid: 9953745beb6e8534a80047b94181b75d, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7319359411138328482, guid: 9953745beb6e8534a80047b94181b75d, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7319359411138328482, guid: 9953745beb6e8534a80047b94181b75d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7319359411138328482, guid: 9953745beb6e8534a80047b94181b75d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7319359411138328482, guid: 9953745beb6e8534a80047b94181b75d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 9953745beb6e8534a80047b94181b75d, type: 3}
+  limitarYConShake: 1
 --- !u!1 &610046497
 GameObject:
   m_ObjectHideFlags: 0
@@ -1622,7 +1562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03da74c7fa588c44ba21dccdeb17053c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1676615200}
+  player: {fileID: 0}
   "distanciaDa\xF1o": 1.2
   tiempoInvulnerable: 1
   vidasMax: 4
@@ -1881,6 +1821,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1196593049 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1221800186252202202, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+  m_PrefabInstance: {fileID: 1558890791}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1271148365
 GameObject:
   m_ObjectHideFlags: 0
@@ -13091,7 +13036,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03da74c7fa588c44ba21dccdeb17053c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1676615200}
+  player: {fileID: 0}
   "distanciaDa\xF1o": 1.2
   tiempoInvulnerable: 1
   vidasMax: 4
@@ -13541,17 +13486,73 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03da74c7fa588c44ba21dccdeb17053c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1676615200}
+  player: {fileID: 0}
   "distanciaDa\xF1o": 1.2
   tiempoInvulnerable: 1
   vidasMax: 4
   textoVida: {fileID: 610046499}
   tagEnemigo: Enemigo
---- !u!4 &1676615200 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7319359411138328482, guid: 9953745beb6e8534a80047b94181b75d, type: 3}
-  m_PrefabInstance: {fileID: 593152808}
-  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1558890791
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1221800186252202202, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -17.042858
+      objectReference: {fileID: 0}
+    - target: {fileID: 1221800186252202202, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.118289
+      objectReference: {fileID: 0}
+    - target: {fileID: 1221800186252202202, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1221800186252202202, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1221800186252202202, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1221800186252202202, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1221800186252202202, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1221800186252202202, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1221800186252202202, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1221800186252202202, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8135134250034846475, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      propertyPath: textoVida
+      value: 
+      objectReference: {fileID: 610046499}
+    - target: {fileID: 8218277991504807654, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
 --- !u!1 &1993144691
 GameObject:
   m_ObjectHideFlags: 0
@@ -13819,7 +13820,7 @@ SceneRoots:
   - {fileID: 409668035}
   - {fileID: 2129554135}
   - {fileID: 1995814061}
-  - {fileID: 593152808}
+  - {fileID: 1558890791}
   - {fileID: 4569783523065628166}
   - {fileID: 1307274637}
   - {fileID: 1058063094}
