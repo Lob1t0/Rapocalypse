@@ -13544,15 +13544,81 @@ PrefabInstance:
       propertyPath: textoVida
       value: 
       objectReference: {fileID: 610046499}
+    - target: {fileID: 8170803153929807241, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      propertyPath: enParedIzquierda
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8170803153929807241, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      propertyPath: fuerzaSaltoParedX
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8170803153929807241, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      propertyPath: fuerzaSaltoParedY
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8170803153929807241, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      propertyPath: velocidadDeslizar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8170803153929807241, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      propertyPath: controladorParedDer
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8170803153929807241, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      propertyPath: controladorParedIzq
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8170803153929807241, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      propertyPath: dimensionesCajaPared.x
+      value: 0.21
+      objectReference: {fileID: 0}
+    - target: {fileID: 8170803153929807241, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      propertyPath: dimensionesCajaPared.y
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8170803153929807241, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      propertyPath: controladorParedDerecha
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8170803153929807241, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      propertyPath: controladorParedIzquierda
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8218277991504807654, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8135134250034846475, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8218277991504807654, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1863731107}
   m_SourcePrefab: {fileID: 100100000, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+--- !u!1 &1863731098 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8218277991504807654, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+  m_PrefabInstance: {fileID: 1558890791}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1863731107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863731098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69c7b3feb8a0d944f955c11b4ad43752, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vidasMax: 4
+  limiteY: -8.43
+  posicionRespawn: {x: -17.39, y: -3.02, z: 0}
+  textoVida: {fileID: 610046499}
+  tiempoInvulnerable: 1.2
 --- !u!1 &1993144691
 GameObject:
   m_ObjectHideFlags: 0

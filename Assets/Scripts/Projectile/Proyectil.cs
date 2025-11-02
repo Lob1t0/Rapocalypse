@@ -31,14 +31,27 @@ public class Proyectil : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Verificar si el objeto golpeado tiene vida
+        // 🧩 Verificar si el proyectil golpea a un enemigo común
         LivingEntity entidad = other.GetComponent<LivingEntity>();
         if (entidad != null)
         {
             entidad.TomarDaño(daño);
+            ProjectilePool.Instance.ReturnProjectile(gameObject);
+            Debug.Log($"🟢 Proyectil dañó a {other.name} ({daño} daño)");
+            return;
         }
 
-        // Devuelve el proyectil al pool
+        // 🧠 Verificar si golpea a un jefe (BossVida)
+        BossVida boss = other.GetComponent<BossVida>();
+        if (boss != null)
+        {
+            boss.TomarDaño(daño);
+            ProjectilePool.Instance.ReturnProjectile(gameObject);
+            Debug.Log($"🔥 Proyectil dañó al JEFE {other.name} ({daño} daño)");
+            return;
+        }
+
+        // Si golpea cualquier otra cosa (pared, suelo, etc.)
         ProjectilePool.Instance.ReturnProjectile(gameObject);
     }
 }
