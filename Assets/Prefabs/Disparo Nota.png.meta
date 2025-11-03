@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: 7a257d3f6a1b220488d9b907954eee64
+guid: acc2f269b8dc2b34dbd660d439d2a202
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4562211836077585139
-    second: Slide-removebg-preview_0
+      213: -1315429032233182399
+    second: Disparo Nota_0
   - first:
-      213: 1400535905902788317
-    second: Slide-removebg-preview_1
+      213: 4500068543718315604
+    second: Disparo Nota_1
   - first:
-      213: 2472920520882944828
-    second: Slide-removebg-preview_2
+      213: 6441786897593850773
+    second: Disparo Nota_2
   - first:
-      213: -6716039219791608818
-    second: Slide-removebg-preview_3
+      213: 5650398860544554814
+    second: Disparo Nota_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -60,7 +60,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 90
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -105,106 +105,93 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Slide-removebg-preview_0
+      name: Disparo Nota_0
       rect:
         serializedVersion: 2
-        x: 12
-        y: 39
-        width: 187
-        height: 150
+        x: 3
+        y: 258
+        width: 143
+        height: 144
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3f2bc774e7b305f30800000000000000
-      internalID: 4562211836077585139
+      spriteID: 14b518eb348aebde0800000000000000
+      internalID: -1315429032233182399
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Slide-removebg-preview_1
+      name: Disparo Nota_1
       rect:
         serializedVersion: 2
-        x: 259
-        y: 40
-        width: 187
-        height: 150
+        x: 239
+        y: 258
+        width: 175
+        height: 101
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ddef38e6cf3bf6310800000000000000
-      internalID: 1400535905902788317
+      spriteID: 4565d358f74737e30800000000000000
+      internalID: 4500068543718315604
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Slide-removebg-preview_2
+      name: Disparo Nota_2
       rect:
         serializedVersion: 2
-        x: 513
-        y: 39
-        width: 187
-        height: 150
+        x: 470
+        y: 222
+        width: 140
+        height: 130
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c3b70059c14915220800000000000000
-      internalID: 2472920520882944828
+      spriteID: 59bd8d5ad03d56950800000000000000
+      internalID: 6441786897593850773
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Slide-removebg-preview_3
+      name: Disparo Nota_3
       rect:
         serializedVersion: 2
-        x: 761
-        y: 40
-        width: 187
-        height: 150
+        x: 710
+        y: 222
+        width: 139
+        height: 132
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e04cab6a9e5dbc2a0800000000000000
-      internalID: -6716039219791608818
+      spriteID: e37b70a93df3a6e40800000000000000
+      internalID: 5650398860544554814
       vertices: []
       indices: 
       edges: []
@@ -213,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: ef6733d7f677c1f4da53dbed5a270105
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -223,10 +210,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Slide-removebg-preview_0: 4562211836077585139
-      Slide-removebg-preview_1: 1400535905902788317
-      Slide-removebg-preview_2: 2472920520882944828
-      Slide-removebg-preview_3: -6716039219791608818
+      Disparo Nota_0: -1315429032233182399
+      Disparo Nota_1: 4500068543718315604
+      Disparo Nota_2: 6441786897593850773
+      Disparo Nota_3: 5650398860544554814
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
