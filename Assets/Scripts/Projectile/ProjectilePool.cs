@@ -6,7 +6,7 @@ public class ProjectilePool : MonoBehaviour
     public static ProjectilePool Instance;
 
     [SerializeField] private GameObject proyectilPrefab;
-    [SerializeField] private int poolSize = 30;
+    [SerializeField] private int poolSize = 5;
 
     private Queue<GameObject> pool = new Queue<GameObject>();
 
@@ -23,7 +23,7 @@ public class ProjectilePool : MonoBehaviour
         }
     }
 
-    public GameObject GetProjectile(Vector3 position, Quaternion rotation, float scale = 1f)
+    public GameObject GetProjectile(Vector3 position, Quaternion rotation, float scale = 0.5f)
     {
         if (pool.Count == 0)
         {
@@ -35,7 +35,7 @@ public class ProjectilePool : MonoBehaviour
         GameObject proj = pool.Dequeue();
         proj.transform.position = position;
         proj.transform.rotation = rotation;
-        proj.transform.localScale = Vector3.one * scale;
+       // proj.transform.localScale = Vector3.one * scale;
         proj.SetActive(true);
 
         return proj;
