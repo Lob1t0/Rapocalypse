@@ -706,12 +706,10 @@ PrefabInstance:
       objectReference: {fileID: 610046499}
     m_RemovedComponents:
     - {fileID: 8667891332952303996, guid: 9953745beb6e8534a80047b94181b75d, type: 3}
+    - {fileID: 3407505576182251919, guid: 9953745beb6e8534a80047b94181b75d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 589864657825442750, guid: 9953745beb6e8534a80047b94181b75d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 861129247}
     - targetCorrespondingSourceObject: {fileID: 589864657825442750, guid: 9953745beb6e8534a80047b94181b75d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 861129256}
@@ -724,23 +722,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 589864657825442750, guid: 9953745beb6e8534a80047b94181b75d, type: 3}
   m_PrefabInstance: {fileID: 742938634}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &861129247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 861129238}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69c7b3feb8a0d944f955c11b4ad43752, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vidasMax: 4
-  limiteY: -8.43
-  posicionRespawn: {x: -17.39, y: -3.02, z: 0}
-  textoVida: {fileID: 610046499}
-  tiempoInvulnerable: 1.2
 --- !u!114 &861129256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3819,7 +3800,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2066590823}
   - component: {fileID: 2066590822}
-  - component: {fileID: 2066590821}
   - component: {fileID: 2066590824}
   - component: {fileID: 2066590826}
   - component: {fileID: 2066590825}
@@ -3830,38 +3810,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2066590821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2066590820}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e400901a98db5014a9c3da56c26e92c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vidaMaxima: 20
-  vidaActual: 0
-  posicionFondo: {fileID: 1160398899}
-  posicionLateral: {fileID: 1267427525}
-  duracionAtaqueFondo: 3
-  tiempoEnLateral: 5
-  velocidadTransicion: 1
-  sprite: {fileID: 2066590822}
-  colorNormal:
-    r: 1
-    g: 1
-    b: 1
-    a: 1
-  "colorDa\xF1ado":
-    r: 1
-    g: 0
-    b: 0
-    a: 1
-  vulnerable: 0
-  enMovimiento: 0
 --- !u!212 &2066590822
 SpriteRenderer:
   m_ObjectHideFlags: 0
