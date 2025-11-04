@@ -77,7 +77,7 @@ public class Shooter : MonoBehaviour
             : Quaternion.Euler(0, 180, 0);
     }
 
-    private void OnAttack(InputAction.CallbackContext ctx)
+    public void OnAttack(InputAction.CallbackContext ctx)
     {
         if (!ctx.performed || !esJugador || fireCooldown > 0f)
             return;

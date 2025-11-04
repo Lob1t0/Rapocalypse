@@ -15,8 +15,8 @@ public class DañoPorEnemigo : MonoBehaviour
     private float temporizadorInvulnerable = 0f;
 
     [Header("Vida del jugador")]
-    [SerializeField] private int vidasMax = 4;
-    private int vidasActuales;
+    [SerializeField] public int vidasMax = 4;
+    public int vidasActuales;
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI textoVida;

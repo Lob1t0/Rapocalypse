@@ -5,18 +5,18 @@ using TMPro;
 public class VidaJugador : MonoBehaviour
 {
     [Header("Configuración de vida")]
-    [SerializeField] private int vidasMax = 4;
-    private int vidasActuales;
+    [SerializeField] public int vidasMax = 4;
+    public int vidasActuales;
 
     [Header("Respawn")]
-    [SerializeField] private float limiteY = -8.43f;
-    [SerializeField] private Vector3 posicionRespawn = new Vector3(-17.39f, -3.02f, 0f);
+    [SerializeField] public float limiteY = -8.43f;
+    [SerializeField] public Vector3 posicionRespawn = new Vector3(-17.39f, -3.02f, 0f);
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI textoVida;
 
     [Header("Invulnerabilidad")]
-    [SerializeField] private float tiempoInvulnerable = 1.2f;
+    [SerializeField] public float tiempoInvulnerable = 1.2f;
     private bool invulnerable = false;
 
     void Start()

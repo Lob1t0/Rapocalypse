@@ -3,15 +3,15 @@ using UnityEngine;
 public class LivingEntity : MonoBehaviour
 {
     [Header("Vida")]
-    [SerializeField] private float vidaMax = 100f;
-    private float vidaActual;
+    [SerializeField] protected float vidaMax = 100f;
+    protected float vidaActual;
 
     [Header("Animator")]
-    [SerializeField] private Animator animator;
+    [SerializeField] protected Animator animator;
 
-    private bool estaMuerto = false;
+    protected bool estaMuerto = false;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         vidaActual = vidaMax;
 
@@ -19,7 +19,8 @@ public class LivingEntity : MonoBehaviour
             animator = GetComponent<Animator>();
     }
 
-    public void TomarDaño(float cantidad)
+    // 🔹 Método virtual para permitir override en clases hijas (Enemy, Player, etc.)
+    public virtual void TomarDaño(float cantidad)
     {
         if (estaMuerto) return;
 
@@ -32,19 +33,18 @@ public class LivingEntity : MonoBehaviour
         }
     }
 
+    // 🔹 También lo marcamos virtual para poder personalizarlo en Enemy
     protected virtual void Morir()
     {
         estaMuerto = true;
         Debug.Log($"{name} murió.");
 
-        // Disparar animación de muerte
         if (animator != null)
         {
             animator.SetTrigger("Die");
         }
         else
         {
-            // Si no tiene animator, desaparecer directo
             DesactivarObjeto();
         }
     }
@@ -52,11 +52,10 @@ public class LivingEntity : MonoBehaviour
     public void RestaurarVida(float cantidad)
     {
         if (estaMuerto) return;
-
         vidaActual = Mathf.Min(vidaActual + cantidad, vidaMax);
     }
 
-    // 🔹 Método llamado por un Animation Event al final del clip "Dead"
+    // Llamado al final de la animación "Dead"
     public void DesactivarObjeto()
     {
         gameObject.SetActive(false);

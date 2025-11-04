@@ -31,7 +31,7 @@ public class MovimientoJugador2D : MonoBehaviour
     [SerializeField] private bool ajustarColliderEnSlide = true;
 
     [Header("Wall Slide / Wall Jump")]
-    [SerializeField] private float velocidadDeslizar = 2f;
+    [SerializeField] private float velocidadDeslizar = 1.5f; // caída lenta
     [SerializeField] private float fuerzaSaltoParedX = 8f;
     [SerializeField] private float fuerzaSaltoParedY = 12f;
     private bool enPared;
@@ -119,26 +119,25 @@ public class MovimientoJugador2D : MonoBehaviour
         bool enSuelo = TocaSueloRaycast();
         if (enSuelo) tDesdeSuelo = 0f;
 
-        // Detectar pared
+        // ===== DETECCIÓN DE PARED Y ANCLAJE =====
         enPared = Physics2D.OverlapBox(controladorPared.position, dimensionesCajaPared, 0f, capaPared);
+        deslizando = !enSuelo && enPared && !haciendoSlide;
 
-        // Wall Slide
-        deslizando = !enSuelo
-                     && enPared
-                     && Mathf.Abs(inputX) > 0.01f
-                     && Mathf.Sign(inputX) == (mirandoDerecha ? 1 : -1)
-                     && rb.linearVelocity.y < -0.1f;
-
-        if (animator) animator.SetBool("WallSlide", deslizando);
+        if (deslizando)
+        {
+            animator.SetBool("WallSlide", true);
+            rb.linearVelocity = new Vector2(0f, Mathf.Max(rb.linearVelocity.y, -velocidadDeslizar)); // caída lenta
+        }
+        else
+        {
+            animator.SetBool("WallSlide", false);
+        }
 
         // Estado de caída
         bool enCaida = !enSuelo && rb.linearVelocity.y < umbralCaida;
         animator.SetBool("Caida", enCaida);
 
-        if (deslizando)
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Clamp(rb.linearVelocity.y, -velocidadDeslizar, float.MaxValue));
-
-        // Slide en suelo
+        // ===== SLIDE EN SUELO =====
         if (!haciendoSlide && pidoSlide && enSuelo && slideCooldownTimer <= 0f)
             IniciarSlide();
         pidoSlide = false;
@@ -149,14 +148,14 @@ public class MovimientoJugador2D : MonoBehaviour
             if (slideTimer <= 0f) TerminarSlide();
         }
 
-        // Movimiento (activo incluso en aire o wall jump)
-        if (!haciendoSlide)
+        // ===== MOVIMIENTO =====
+        if (!haciendoSlide && !deslizando)
         {
             Vector2 velObjetivo = new Vector2(inputX * velocidad, rb.linearVelocity.y);
             rb.linearVelocity = Vector2.SmoothDamp(rb.linearVelocity, velObjetivo, ref velRef, suavizado);
         }
 
-        // Salto normal
+        // ===== SALTO NORMAL =====
         if (!haciendoSlide && !enAire && tDesdeSuelo <= coyoteTime && jumpPressedRemember > 0)
         {
             enAire = true;
@@ -169,18 +168,18 @@ public class MovimientoJugador2D : MonoBehaviour
             jumpPressedRemember = 0;
         }
 
-        // Wall Jump
+        // ===== WALL JUMP =====
         if (jumpPressedRemember > 0 && deslizando)
         {
             WallJump();
             jumpPressedRemember = 0;
         }
 
-        // Estado de caída
+        // ===== ESTADO DE CAÍDA =====
         if (usarEstadoFall && enAire && rb.linearVelocity.y < umbralCaida)
             SnapTo(stFall);
 
-        // Aterrizaje
+        // ===== ATERRIZAJE =====
         if (enAire && enSuelo && rb.linearVelocity.y <= 0.01f)
         {
             enAire = false;
@@ -198,15 +197,14 @@ public class MovimientoJugador2D : MonoBehaviour
             }
         }
 
-        // Flip (deshabilitado durante slide en suelo)
-        if (!haciendoSlide) 
+        // ===== FLIP =====
+        if (!haciendoSlide)
         {
             if (inputX > 0.01f && !mirandoDerecha) Girar();
             else if (inputX < -0.01f && mirandoDerecha) Girar();
         }
 
-
-        // Idle/Walk
+        // ===== IDLE / WALK =====
         if (!enAire && !haciendoSlide)
         {
             bool mov = Mathf.Abs(inputX) > 0.01f && enSuelo;
@@ -218,43 +216,32 @@ public class MovimientoJugador2D : MonoBehaviour
             SnapIdleOnNotIdle();
     }
 
-    // Wall Jump
+    // ===== WALL JUMP =====
     private void WallJump()
     {
-        float dir = mirandoDerecha ? -1f : 1f;
-        rb.linearVelocity = new Vector2(fuerzaSaltoParedX * dir, fuerzaSaltoParedY);
+        float inputDir = 0f;
+        if (Input.GetKey(KeyCode.A)) inputDir = -1f;
+        else if (Input.GetKey(KeyCode.D)) inputDir = 1f;
+
+        // Si no hay input, salta en dirección contraria a la pared
+        if (inputDir == 0f)
+            inputDir = mirandoDerecha ? -1f : 1f;
+
+        rb.linearVelocity = Vector2.zero;
+        rb.AddForce(new Vector2(fuerzaSaltoParedX * inputDir, fuerzaSaltoParedY), ForceMode2D.Impulse);
+
+        if ((inputDir > 0f && !mirandoDerecha) || (inputDir < 0f && mirandoDerecha))
+            Girar();
+
+        deslizando = false;
         enAire = true;
 
+        animator.SetBool("WallSlide", false);
         DispararTrigger("Jump");
         SnapTo(stJump);
     }
 
-    // Entradas
-    private float LeerHorizontal()
-    {
-        float kb = 0f;
-        if (Input.GetKey(KeyCode.A)) kb -= 1f;
-        if (Input.GetKey(KeyCode.D)) kb += 1f;
-
-        float stick = Input.GetAxis("Horizontal");
-        return Mathf.Abs(kb) > 0.01f ? kb : stick;
-    }
-
-    private bool JumpPressed()
-    {
-        if (Input.GetKeyDown(KeyCode.Space)) return true;
-        if (Input.GetKeyDown(botonGamepadSaltar)) return true;
-        return false;
-    }
-
-    private bool SlidePressed()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)) return true;
-        if (Input.GetKeyDown(botonGamepadSlide)) return true;
-        return false;
-    }
-
-    // Slide en suelo
+    // ===== SLIDE EN SUELO =====
     private void IniciarSlide()
     {
         haciendoSlide = true;
@@ -298,7 +285,7 @@ public class MovimientoJugador2D : MonoBehaviour
         }
     }
 
-    // Suelo
+    // ===== UTILIDADES =====
     private bool TocaSueloRaycast()
     {
         Vector2 origen = (Vector2)transform.position + offsetRay;
@@ -307,7 +294,6 @@ public class MovimientoJugador2D : MonoBehaviour
         return hit.collider != null;
     }
 
-    // Anim Utils
     private bool HasController() => animator && animator.runtimeAnimatorController != null;
 
     private void DispararTrigger(string nombre)
@@ -340,25 +326,47 @@ public class MovimientoJugador2D : MonoBehaviour
             SnapIdle();
     }
 
-    // Varios
     private void Girar()
     {
         mirandoDerecha = !mirandoDerecha;
-        var s = transform.localScale; s.x *= -1f; transform.localScale = s;
+        var s = transform.localScale;
+        s.x *= -1f;
+        transform.localScale = s;
     }
 
     private void OnDrawGizmosSelected()
     {
-        // Suelo
         Gizmos.color = Color.cyan;
         Vector3 o = transform.position + (Vector3)offsetRay;
         Gizmos.DrawLine(o, o + Vector3.down * largoRay);
 
-        // Pared
         if (controladorPared != null)
         {
             Gizmos.color = Color.magenta;
             Gizmos.DrawWireCube(controladorPared.position, dimensionesCajaPared);
         }
+    }
+
+    // ===== ENTRADAS =====
+    private float LeerHorizontal()
+    {
+        float kb = 0f;
+        if (Input.GetKey(KeyCode.A)) kb -= 1f;
+        if (Input.GetKey(KeyCode.D)) kb += 1f;
+
+        float stick = Input.GetAxis("Horizontal");
+        return Mathf.Abs(kb) > 0.01f ? kb : stick;
+    }
+
+    private bool JumpPressed()
+    {
+        return Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(botonGamepadSaltar);
+    }
+
+    private bool SlidePressed()
+    {
+        return Input.GetKeyDown(KeyCode.LeftShift) ||
+               Input.GetKeyDown(KeyCode.RightShift) ||
+               Input.GetKeyDown(botonGamepadSlide);
     }
 }
