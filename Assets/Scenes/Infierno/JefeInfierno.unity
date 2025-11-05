@@ -242,6 +242,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8855979365706656977, guid: 9953745beb6e8534a80047b94181b75d, type: 3}
   m_PrefabInstance: {fileID: 742938634}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &259797011
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 259797012}
+  m_Layer: 0
+  m_Name: FirePointDirigidoB
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &259797012
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259797011}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 244.17, y: 3.84, z: -0.14408378}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!1 &409668033
 GameObject:
   m_ObjectHideFlags: 0
@@ -792,8 +823,7 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 610046499}
     m_RemovedComponents:
-    - {fileID: 8667891332952303996, guid: 9953745beb6e8534a80047b94181b75d, type: 3}
-    - {fileID: 3407505576182251919, guid: 9953745beb6e8534a80047b94181b75d, type: 3}
+    - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -950,6 +980,42 @@ MonoBehaviour:
   shakeDuracion: 0.1
   shakeAmplitud: 0.18
   shakeFrecuencia: 32
+--- !u!4 &861129263 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7319359411138328482, guid: 9953745beb6e8534a80047b94181b75d, type: 3}
+  m_PrefabInstance: {fileID: 742938634}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &882202082
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 882202083}
+  m_Layer: 0
+  m_Name: FirePointDirigidoA
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &882202083
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882202082}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 226.98, y: 3.84, z: -0.14408378}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!1 &1030576781
 GameObject:
   m_ObjectHideFlags: 0
@@ -4349,6 +4415,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1be680989d8328844920a7c91a69531d, type: 3}
+--- !u!1 &1456779144
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1456779145}
+  m_Layer: 0
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1456779145
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1456779144}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
+  m_LocalPosition: {x: 250.73, y: -5.39, z: -0.14408378}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!1 &1995814060
 GameObject:
   m_ObjectHideFlags: 0
@@ -4481,6 +4578,7 @@ GameObject:
   - component: {fileID: 2066590824}
   - component: {fileID: 2066590826}
   - component: {fileID: 2066590825}
+  - component: {fileID: 2066590827}
   m_Layer: 0
   m_Name: jefe
   m_TagString: Boss
@@ -4617,7 +4715,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vida: 20
-  spriteRenderer: {fileID: 2066590822}
+  spriteMuerte: {fileID: -396309887504945837, guid: 14d5f2b647e8d5940bfeb42a80eb97e0, type: 3}
   colorNormal: {r: 1, g: 1, b: 1, a: 1}
   "colorDa\xF1ado": {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &2066590826
@@ -4633,14 +4731,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bossVida: {fileID: 2066590825}
+  attackSystem: {fileID: 2066590827}
   posicionFondo: {fileID: 1160398899}
   posicionLateral: {fileID: 1267427525}
-  duracionAtaqueFondo: 3
-  tiempoEnLateral: 5
+  duracionAtaqueFondo: 4
+  tiempoEnLateral: 3
   velocidadTransicion: 10
-  sprite: {fileID: 2066590822}
+  spriteNormal: {fileID: 6243355746201222545, guid: 1b6b04afd343f86468b6beceaf5d753e, type: 3}
+  spriteLateral: {fileID: 7649951365516317900, guid: 8518551b97aceae4baf9baa0122454b8, type: 3}
   colorNormal: {r: 1, g: 1, b: 1, a: 1}
   colorVulnerable: {r: 1, g: 0.7, b: 0.7, a: 1}
+--- !u!114 &2066590827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066590820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 318c286f3760c6f4bac64ca5e9d82d92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firePointNormal: {fileID: 1456779145}
+  firePointTeledirigidoA: {fileID: 882202083}
+  firePointTeledirigidoB: {fileID: 259797012}
+  proyejefe: {fileID: 181477257130373504, guid: 01bbf03e9653fe049aa39008b7c3989c, type: 3}
+  ataqueSueloPrefab: {fileID: 535817067587185779, guid: 361641e8d7edc5940a522a0c99357829, type: 3}
+  player: {fileID: 861129263}
+  velocidadDisparo: 10
+  intervaloAtaques: 1.5
+  rafagasPorAtaque: 3
 --- !u!1 &2129554133
 GameObject:
   m_ObjectHideFlags: 1
@@ -4710,3 +4831,6 @@ SceneRoots:
   - {fileID: 1267427525}
   - {fileID: 164152023}
   - {fileID: 708310573}
+  - {fileID: 1456779145}
+  - {fileID: 882202083}
+  - {fileID: 259797012}

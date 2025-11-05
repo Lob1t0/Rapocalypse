@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
@@ -15,19 +16,19 @@ public class VidaJugador : MonoBehaviour
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI textoVida;
 
-    [Header("Invulnerabilidad")]
-    [SerializeField] public float tiempoInvulnerable = 1.2f;
-    private bool invulnerable = false;
+    [Header("Daño simultáneo")]
+    [Tooltip("Permite recibir daño de varios ataques diferentes a la vez, pero solo una vez por cada ataque.")]
+    private HashSet<GameObject> ataquesQueYaDañaron = new HashSet<GameObject>();
 
-    void Start()
+    private void Start()
     {
         vidasActuales = vidasMax;
         ActualizarUI();
     }
 
-    void Update()
+    private void Update()
     {
-        // Detecta caída fuera del mapa
+        // Detecta si cae fuera del mapa
         if (transform.position.y < limiteY)
         {
             PerderVidaPorCaida();
@@ -35,30 +36,48 @@ public class VidaJugador : MonoBehaviour
     }
 
     // ------------------------------
-    //     SISTEMA DE DAÑO
+    //      SISTEMA DE DAÑO
     // ------------------------------
 
+    /// <summary>
+    /// Daño estándar (sin referencia de ataque)
+    /// </summary>
     public void RecibirDanioEnemigo()
     {
-        if (invulnerable) return;
+        RecibirDanioEnemigo(null);
+    }
 
+    /// <summary>
+    /// Daño con referencia al objeto atacante (para evitar daño repetido del mismo)
+    /// </summary>
+    public void RecibirDanioEnemigo(GameObject atacante)
+    {
+        // Evita que un mismo ataque cause daño repetido
+        if (atacante != null)
+        {
+            if (ataquesQueYaDañaron.Contains(atacante))
+                return; // este ataque ya dañó una vez
+            ataquesQueYaDañaron.Add(atacante);
+        }
+
+        // Resta vida
         vidasActuales = Mathf.Max(vidasActuales - 1, 0);
         ActualizarUI();
 
+        Debug.Log($"💥 Jugador recibió daño de {atacante?.name ?? "ataque desconocido"}. Vida restante: {vidasActuales}");
+
+        // Si se quedó sin vida, reinicia escena
         if (vidasActuales <= 0)
         {
             ReiniciarEscena();
-            return;
         }
-
-        StartCoroutine(InvulnerabilidadTemporal());
     }
 
+    // ------------------------------
+    //      SISTEMA DE CAÍDA
+    // ------------------------------
     private void PerderVidaPorCaida()
     {
-        if (invulnerable) return;
-
-        // Si ya no le quedan vidas, reinicia
         if (vidasActuales <= 1)
         {
             vidasActuales = 0;
@@ -67,16 +86,18 @@ public class VidaJugador : MonoBehaviour
         }
         else
         {
-            vidasActuales = Mathf.Max(vidasActuales - 1, 0);
+            vidasActuales--;
             ActualizarUI();
             transform.position = posicionRespawn;
-            StartCoroutine(InvulnerabilidadTemporal());
         }
     }
 
+    // ------------------------------
+    //      FUNCIONES AUXILIARES
+    // ------------------------------
     private void ReiniciarEscena()
     {
-        Debug.Log("Jugador sin vidas. Reiniciando escena...");
+        Debug.Log("☠️ Jugador sin vidas. Reiniciando escena...");
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -86,18 +107,14 @@ public class VidaJugador : MonoBehaviour
             textoVida.text = $"Vida: {vidasActuales}/{vidasMax}";
     }
 
-    private System.Collections.IEnumerator InvulnerabilidadTemporal()
+    // Permite curarse o restaurar vida
+    public void RestaurarVida()
     {
-        invulnerable = true;
-        yield return new WaitForSeconds(tiempoInvulnerable);
-        invulnerable = false;
+        vidasActuales = vidasMax;
+        ataquesQueYaDañaron.Clear();
+        ActualizarUI();
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Enemigo"))
-        {
-            RecibirDanioEnemigo();
-        }
-    }
+    public int GetVidaActual() => vidasActuales;
+    public int GetVidaMaxima() => vidasMax;
 }

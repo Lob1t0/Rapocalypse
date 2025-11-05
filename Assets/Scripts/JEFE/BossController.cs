@@ -4,66 +4,76 @@ using System.Collections;
 public class BossController : MonoBehaviour
 {
     [Header("Referencias")]
-    [SerializeField] private BossVida bossVida; // Script de vida del jefe
+    [SerializeField] private BossVida bossVida;
+    [SerializeField] private BossAttackSystem attackSystem;
 
     [Header("Posiciones del jefe")]
-    [SerializeField] private Transform posicionFondo;   // Donde inicia o ataca desde el fondo
-    [SerializeField] private Transform posicionLateral; // Donde es vulnerable
+    [SerializeField] private Transform posicionFondo;
+    [SerializeField] private Transform posicionLateral;
 
     [Header("Tiempos")]
-    [SerializeField] private float duracionAtaqueFondo = 3f;   // Tiempo atacando en el fondo
-    [SerializeField] private float tiempoEnLateral = 5f;       // Tiempo vulnerable
+    [SerializeField] private float duracionAtaqueFondo = 3f;
+    [SerializeField] private float tiempoEnLateral = 5f;
 
     [Header("Movimiento")]
     [SerializeField] private float velocidadTransicion = 3f;
 
     [Header("Visual")]
-    [SerializeField] private SpriteRenderer sprite;
+    [SerializeField] private Sprite spriteNormal;
+    [SerializeField] private Sprite spriteLateral;
     [SerializeField] private Color colorNormal = Color.white;
     [SerializeField] private Color colorVulnerable = new Color(1f, 0.7f, 0.7f);
 
     private bool vulnerable = false;
     private bool enMovimiento = false;
+    private bool jefeMuerto = false;
+    private SpriteRenderer sr;
+
+    private Coroutine cicloAtaques;
 
     private void Start()
     {
-        if (!sprite) sprite = GetComponent<SpriteRenderer>();
+        sr = GetComponent<SpriteRenderer>();
         if (!bossVida) bossVida = GetComponent<BossVida>();
+        if (!attackSystem) attackSystem = GetComponent<BossAttackSystem>();
 
-        // 🔄 Inicializamos el ciclo del jefe
-        StartCoroutine(CicloDeAtaques());
+        if (spriteNormal) sr.sprite = spriteNormal;
+        sr.color = colorNormal;
+
+        cicloAtaques = StartCoroutine(CicloDeAtaques());
     }
 
     private IEnumerator CicloDeAtaques()
     {
-        while (bossVida != null) // Mientras siga con vida
+        while (!jefeMuerto && bossVida != null)
         {
-            // 1️⃣ Fase en el fondo (atacando, invulnerable)
+            // Fase fondo (invulnerable)
             vulnerable = false;
-            bossVida.enabled = true; // sigue activo, pero no se le puede dañar
+            attackSystem?.ActivarAtaque();
             yield return StartCoroutine(MoverA(posicionFondo.position));
-            sprite.color = colorNormal;
 
+            if (spriteNormal) sr.sprite = spriteNormal;
+            sr.color = colorNormal;
             Debug.Log("⚔ El jefe ataca desde el fondo...");
             yield return new WaitForSeconds(duracionAtaqueFondo);
 
-            // 2️⃣ Fase vulnerable (se mueve a lateral y puede recibir daño)
+            // Fase lateral (vulnerable)
+            attackSystem?.DesactivarAtaque();
             yield return StartCoroutine(MoverA(posicionLateral.position));
             vulnerable = true;
-            sprite.color = colorVulnerable;
 
+            if (spriteLateral) sr.sprite = spriteLateral;
+            sr.color = colorVulnerable;
             Debug.Log("🩸 El jefe ahora es vulnerable.");
+
             yield return new WaitForSeconds(tiempoEnLateral);
         }
-
-        // Si se destruye, salir del ciclo
-        yield break;
     }
 
     private IEnumerator MoverA(Vector3 destino)
     {
         enMovimiento = true;
-        while (Vector3.Distance(transform.position, destino) > 0.05f)
+        while (!jefeMuerto && Vector3.Distance(transform.position, destino) > 0.05f)
         {
             transform.position = Vector3.MoveTowards(transform.position, destino, velocidadTransicion * Time.deltaTime);
             yield return null;
@@ -73,14 +83,22 @@ public class BossController : MonoBehaviour
 
     private void Update()
     {
-        // 👇 Actualiza el estado del jefe en su script de vida (para que no reciba daño si se mueve)
+        if (jefeMuerto) return;
+
         if (bossVida != null)
         {
-            bossVida.enabled = true;
-            // el daño solo aplica si está vulnerable y no en movimiento
             bossVida.SendMessage("SetVulnerableInterno", vulnerable, SendMessageOptions.DontRequireReceiver);
             bossVida.SendMessage("SetMovimientoInterno", enMovimiento, SendMessageOptions.DontRequireReceiver);
         }
+    }
+
+    // 🔹 Llamado por BossVida cuando muere
+    public void DetenerJefeAlMorir()
+    {
+        jefeMuerto = true;
+        StopAllCoroutines();
+        attackSystem?.DesactivarAtaque();
+        Debug.Log("🧊 El jefe ha muerto, movimiento detenido.");
     }
 
     private void OnDrawGizmos()
