@@ -63,30 +63,24 @@ public class VidaJugador : MonoBehaviour
     /// Daño con referencia al objeto atacante (para evitar daño repetido del mismo)
     /// </summary>
     public void RecibirDanioEnemigo(GameObject atacante)
+{
+    if (muerto) return;
+
+    // ✅ SOLO BLOQUEA MIENTRAS ESTÉ EN CONTACTO
+    // Cuando salga del contacto, el DamoAlJugador reseteará el cooldown
+    
+    // Resta vida
+    vidasActuales = Mathf.Max(vidasActuales - 1, 0);
+    ActualizarUI();
+    Debug.Log($"💥 Jugador recibió daño de {atacante?.name ?? "ataque desconocido"}. Vida restante: {vidasActuales}");
+
+    // Si se quedó sin vida, reinicia escena
+    if (vidasActuales <= 0)
     {
-        if (muerto) return;
-
-        // Evita que un mismo ataque cause daño repetido
-        if (atacante != null)
-        {
-            if (ataquesQueYaDañaron.Contains(atacante))
-                return; // este ataque ya dañó una vez
-
-            ataquesQueYaDañaron.Add(atacante);
-        }
-
-        // Resta vida
-        vidasActuales = Mathf.Max(vidasActuales - 1, 0);
-        ActualizarUI();
-
-        Debug.Log($"💥 Jugador recibió daño de {atacante?.name ?? "ataque desconocido"}. Vida restante: {vidasActuales}");
-
-        // Si se quedó sin vida, reinicia escena
-        if (vidasActuales <= 0)
-        {
-            MorirJugador();
-        }
+        MorirJugador();
     }
+}
+
 
     // ==============================
     // SISTEMA DE CAÍDA

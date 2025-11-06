@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Proyectil : MonoBehaviour
 {
-    [SerializeField] private float daño = 1f;
+    [SerializeField] private float daño = 25f; // Cambié a 25 para 4 disparos = muerte
     [SerializeField] private float tiempoVida = 3f;
 
     private Vector2 direccion;
@@ -31,7 +31,7 @@ public class Proyectil : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // 🧩 Verificar si el proyectil golpea a un enemigo común
+        // 🧩 OPCIÓN 1: Verificar si golpea LivingEntity
         LivingEntity entidad = other.GetComponent<LivingEntity>();
         if (entidad != null)
         {
@@ -41,7 +41,17 @@ public class Proyectil : MonoBehaviour
             return;
         }
 
-        // 🧠 Verificar si golpea a un jefe (BossVida)
+        // 🧩 OPCIÓN 2: Verificar si golpea EnemyHealth (enemigos simples)
+        EnemyHealth enemyHealth = other.GetComponent<EnemyHealth>();
+        if (enemyHealth != null)
+        {
+            enemyHealth.TakeDamage((int)daño);
+            ProjectilePool.Instance.ReturnProjectile(gameObject);
+            Debug.Log($"🟢 Proyectil dañó a ENEMIGO {other.name} ({daño} daño)");
+            return;
+        }
+
+        // 🧠 OPCIÓN 3: Verificar si golpea a un jefe (BossVida)
         BossVida boss = other.GetComponent<BossVida>();
         if (boss != null)
         {
@@ -51,7 +61,7 @@ public class Proyectil : MonoBehaviour
             return;
         }
 
-        // Si golpea cualquier otra cosa (pared, suelo, etc.)
+        // Si golpea cualquier otra cosa, simplemente retorna el proyectil
         ProjectilePool.Instance.ReturnProjectile(gameObject);
     }
 }
