@@ -1,16 +1,28 @@
 fileFormatVersion: 2
-guid: 00c3173708069444d8c702e78d5c10e7
+guid: fa178e34b3b9ebe43ba4d49f8114f6fc
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 989763977084697835
-    second: Player Hurt_0
+      213: -3704254577393239311
+    second: Fire_attack_0
   - first:
-      213: 6143967852181161519
-    second: Player Hurt_1
+      213: -5894378642714909642
+    second: Fire_attack_1
   - first:
-      213: -1155078816964881761
-    second: Player Hurt_2
+      213: -7976128591318785859
+    second: Fire_attack_2
+  - first:
+      213: 1425258469378329500
+    second: Fire_attack_3
+  - first:
+      213: -828093748102020058
+    second: Fire_attack_4
+  - first:
+      213: 1416097047700975990
+    second: Fire_attack_5
+  - first:
+      213: 294925696157654325
+    second: Fire_attack_6
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -57,7 +69,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 20
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -119,13 +131,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Player Hurt_0
+      name: Fire_attack_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 6
-        width: 24
-        height: 34
+        x: 0
+        y: 4
+        width: 86
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -134,20 +146,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bec7c99d7195cbd00800000000000000
-      internalID: 989763977084697835
+      spriteID: 1fa7cdc7618d79cc0800000000000000
+      internalID: -3704254577393239311
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Hurt_1
+      name: Fire_attack_1
       rect:
         serializedVersion: 2
-        x: 47
-        y: 7
-        width: 24
-        height: 35
+        x: 95
+        y: 4
+        width: 87
+        height: 22
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -156,20 +168,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f268dac9532c34550800000000000000
-      internalID: 6143967852181161519
+      spriteID: 634245daad5f23ea0800000000000000
+      internalID: -5894378642714909642
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Hurt_2
+      name: Fire_attack_2
       rect:
         serializedVersion: 2
-        x: 100
-        y: 7
-        width: 21
-        height: 33
+        x: 98
+        y: 21
+        width: 6
+        height: 6
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -178,8 +190,96 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f92da339fe558ffe0800000000000000
-      internalID: -1155078816964881761
+      spriteID: db06b973e491f4190800000000000000
+      internalID: -7976128591318785859
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_attack_3
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 4
+        width: 85
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9b896cc60987c310800000000000000
+      internalID: 1425258469378329500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_attack_4
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 1
+        width: 86
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62448af9f150284f0800000000000000
+      internalID: -828093748102020058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_attack_5
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 2
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67132b713ccf6a310800000000000000
+      internalID: 1416097047700975990
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_attack_6
+      rect:
+        serializedVersion: 2
+        x: 264
+        y: 2
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53d9c9aab59c71400800000000000000
+      internalID: 294925696157654325
       vertices: []
       indices: 
       edges: []
@@ -198,9 +298,13 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Player Hurt_0: 989763977084697835
-      Player Hurt_1: 6143967852181161519
-      Player Hurt_2: -1155078816964881761
+      Fire_attack_0: -3704254577393239311
+      Fire_attack_1: -5894378642714909642
+      Fire_attack_2: -7976128591318785859
+      Fire_attack_3: 1425258469378329500
+      Fire_attack_4: -828093748102020058
+      Fire_attack_5: 1416097047700975990
+      Fire_attack_6: 294925696157654325
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

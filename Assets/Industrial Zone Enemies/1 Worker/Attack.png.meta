@@ -1,16 +1,25 @@
 fileFormatVersion: 2
-guid: 00c3173708069444d8c702e78d5c10e7
+guid: f4c83b761afe3f343b0d5ee4d34315b4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 989763977084697835
-    second: Player Hurt_0
+      213: -7008412969330441016
+    second: Attack_0
   - first:
-      213: 6143967852181161519
-    second: Player Hurt_1
+      213: -7763475090823894447
+    second: Attack_1
   - first:
-      213: -1155078816964881761
-    second: Player Hurt_2
+      213: 302641331129538988
+    second: Attack_2
+  - first:
+      213: -6329420634031446844
+    second: Attack_3
+  - first:
+      213: -910092549403018386
+    second: Attack_4
+  - first:
+      213: 221524225039350300
+    second: Attack_5
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -57,7 +66,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 20
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -119,12 +128,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Player Hurt_0
+      name: Attack_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 6
-        width: 24
+        x: 3
+        y: 0
+        width: 20
         height: 34
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -134,20 +143,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bec7c99d7195cbd00800000000000000
-      internalID: 989763977084697835
+      spriteID: 8c481db598d1dbe90800000000000000
+      internalID: -7008412969330441016
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Hurt_1
+      name: Attack_1
       rect:
         serializedVersion: 2
-        x: 47
-        y: 7
-        width: 24
-        height: 35
+        x: 50
+        y: 0
+        width: 23
+        height: 34
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -156,19 +165,63 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f268dac9532c34550800000000000000
-      internalID: 6143967852181161519
+      spriteID: 15a29dc9988924490800000000000000
+      internalID: -7763475090823894447
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player Hurt_2
+      name: Attack_2
       rect:
         serializedVersion: 2
-        x: 100
-        y: 7
+        x: 96
+        y: 0
+        width: 28
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca9d35cefa2333400800000000000000
+      internalID: 302641331129538988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Attack_3
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 0
         width: 21
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c42782d7716928a0800000000000000
+      internalID: -6329420634031446844
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Attack_4
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 0
+        width: 27
         height: 33
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -178,8 +231,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f92da339fe558ffe0800000000000000
-      internalID: -1155078816964881761
+      spriteID: e6b7a10f5a3be53f0800000000000000
+      internalID: -910092549403018386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Attack_5
+      rect:
+        serializedVersion: 2
+        x: 246
+        y: 0
+        width: 17
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1a3d96eb13031300800000000000000
+      internalID: 221524225039350300
       vertices: []
       indices: 
       edges: []
@@ -198,9 +273,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Player Hurt_0: 989763977084697835
-      Player Hurt_1: 6143967852181161519
-      Player Hurt_2: -1155078816964881761
+      Attack_0: -7008412969330441016
+      Attack_1: -7763475090823894447
+      Attack_2: 302641331129538988
+      Attack_3: -6329420634031446844
+      Attack_4: -910092549403018386
+      Attack_5: 221524225039350300
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

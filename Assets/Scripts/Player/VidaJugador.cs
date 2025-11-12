@@ -1,12 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-/// <summary>
-/// Sistema de vida del jugador mejorado para integrarse con UIManager.
-/// Mantiene compatibilidad con el sistema anterior de texto.
-/// </summary>
 public class VidaJugador : MonoBehaviour
 {
     [Header("Configuración de vida")]
@@ -18,72 +15,73 @@ public class VidaJugador : MonoBehaviour
     [SerializeField] public Vector3 posicionRespawn = new Vector3(-17.39f, -3.02f, 0f);
 
     [Header("UI")]
-    [SerializeField] private TextMeshProUGUI textoVida; // Para compatibilidad si lo deseas
-    [SerializeField] private UIManager uiManager; // Nueva referencia al gestor de UI
+    [SerializeField] private TextMeshProUGUI textoVida;
+    [SerializeField] private UIManager uiManager;
 
-    [Header("Daño simultáneo")]
-    [Tooltip("Permite recibir daño de varios ataques diferentes a la vez, pero solo una vez por cada ataque.")]
     private HashSet<GameObject> ataquesQueYaDañaron = new HashSet<GameObject>();
 
     private bool muerto = false;
+    private Animator animator;
 
     private void Start()
     {
         vidasActuales = vidasMax;
-        
-        // Buscar UIManager si no está asignado
+
         if (!uiManager)
             uiManager = FindFirstObjectByType<UIManager>();
+
+        animator = GetComponent<Animator>();
 
         ActualizarUI();
     }
 
     private void Update()
     {
-        // Detecta si cae fuera del mapa
+        if (muerto) return;
+
         if (transform.position.y < limiteY)
-        {
             PerderVidaPorCaida();
-        }
     }
 
     // ==============================
-    // SISTEMA DE DAÑO
+    // DAÑO
     // ==============================
 
-    /// <summary>
-    /// Daño estándar (sin referencia de ataque)
-    /// </summary>
-    public void RecibirDanioEnemigo()
-    {
-        RecibirDanioEnemigo(null);
-    }
+    public void RecibirDanioEnemigo() => RecibirDanioEnemigo(null);
 
-    /// <summary>
-    /// Daño con referencia al objeto atacante (para evitar daño repetido del mismo)
-    /// </summary>
     public void RecibirDanioEnemigo(GameObject atacante)
-{
-    if (muerto) return;
-
-    // ✅ SOLO BLOQUEA MIENTRAS ESTÉ EN CONTACTO
-    // Cuando salga del contacto, el DamoAlJugador reseteará el cooldown
-    
-    // Resta vida
-    vidasActuales = Mathf.Max(vidasActuales - 1, 0);
-    ActualizarUI();
-    Debug.Log($"💥 Jugador recibió daño de {atacante?.name ?? "ataque desconocido"}. Vida restante: {vidasActuales}");
-
-    // Si se quedó sin vida, reinicia escena
-    if (vidasActuales <= 0)
     {
+        if (muerto) return;
+
+        vidasActuales = Mathf.Max(vidasActuales - 1, 0);
+        ActualizarUI();
+
+        // 🔥 ANIMACIÓN DE DAÑO (SOLO SI LE QUEDAN VIDAS)
+        if (vidasActuales > 0)
+        {
+            if (animator)
+                animator.SetTrigger("Daño");
+
+            // 🔥 Volver a Idle después de EXACTAMENTE 1 segundo
+            StartCoroutine(VolverIdleDespuesDeDanio());
+            return;
+        }
+
+        // 🔥 SI LLEGÓ A 0 → MUERTE
         MorirJugador();
     }
-}
 
+    private IEnumerator VolverIdleDespuesDeDanio()
+    {
+        yield return new WaitForSeconds(0.3f);
+
+        // 🔥 VOLVER A IDLE
+        if (!muerto && animator)
+            animator.Play("Idle");
+    }
 
     // ==============================
-    // SISTEMA DE CAÍDA
+    // CAÍDA
     // ==============================
 
     private void PerderVidaPorCaida()
@@ -101,27 +99,55 @@ public class VidaJugador : MonoBehaviour
             vidasActuales--;
             ActualizarUI();
             transform.position = posicionRespawn;
-
-            // Limpiar ataques después de respawn
             ataquesQueYaDañaron.Clear();
-
-            Debug.Log($"⬇️ El jugador cayó. Vidas restantes: {vidasActuales}");
         }
     }
 
     // ==============================
-    // FUNCIONES AUXILIARES
+    // MUERTE FINAL
     // ==============================
 
     private void MorirJugador()
     {
         if (muerto) return;
-        
         muerto = true;
-        Debug.Log("☠️ Jugador sin vidas. Reiniciando escena...");
-        
-        // Pequeño delay para que se vea la animación final
-        Invoke(nameof(ReiniciarEscena), 0.5f);
+
+        Debug.Log("☠️ Jugador murió");
+
+        if (animator)
+            animator.SetBool("Muerte", true);
+
+        // 🔥 Desactivar scripts del jugador
+        MonoBehaviour[] scripts = GetComponents<MonoBehaviour>();
+        foreach (var s in scripts)
+            if (s != this) s.enabled = false;
+
+        // 🔥 Congelar físicas
+        if (TryGetComponent<Rigidbody2D>(out var rb))
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0;
+            rb.bodyType = RigidbodyType2D.Kinematic;
+        }
+
+        if (TryGetComponent<CharacterController>(out var cc))
+            cc.enabled = false;
+
+        StartCoroutine(AnimacionMuerteYCongelar());
+
+        // 🔥 Reiniciar escena en EXACTAMENTE 4 segundos
+        Invoke(nameof(ReiniciarEscena), 4f);
+    }
+
+    private IEnumerator AnimacionMuerteYCongelar()
+    {
+        while (!animator.GetCurrentAnimatorStateInfo(0).IsName("Muerte"))
+            yield return null;
+
+        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
+            yield return null;
+
+        animator.enabled = false; // Congela el sprite
     }
 
     private void ReiniciarEscena()
@@ -131,45 +157,34 @@ public class VidaJugador : MonoBehaviour
 
     private void ActualizarUI()
     {
-        // Mantener compatibilidad con texto si existe
         if (textoVida != null)
             textoVida.text = $"Vida: {vidasActuales}/{vidasMax}";
-
-        // El UIManager se encargará de actualizar los corazones automáticamente en su Update()
     }
 
     // ==============================
-    // GETTERS Y SETTERS
+    // CURACIÓN
     // ==============================
 
     public int GetVidaActual() => vidasActuales;
     public int GetVidaMaxima() => vidasMax;
 
-    /// <summary>
-    /// Permite curarse o restaurar vida (útil para power-ups)
-    /// </summary>
     public void RestaurarVida()
     {
         vidasActuales = vidasMax;
         ataquesQueYaDañaron.Clear();
         muerto = false;
+
+        if (animator)
+            animator.SetBool("Muerte", false);
+
         ActualizarUI();
     }
 
-    /// <summary>
-    /// Restaura una cantidad específica de vida
-    /// </summary>
     public void RestaurarVida(int cantidad)
     {
         vidasActuales = Mathf.Min(vidasActuales + cantidad, vidasMax);
         ActualizarUI();
     }
 
-    /// <summary>
-    /// Limpia el registro de ataques (útil después de cambiar de escena o fase)
-    /// </summary>
-    public void LimpiarAtaques()
-    {
-        ataquesQueYaDañaron.Clear();
-    }
+    public void LimpiarAtaques() => ataquesQueYaDañaron.Clear();
 }
