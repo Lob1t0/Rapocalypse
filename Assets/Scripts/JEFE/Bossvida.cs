@@ -17,6 +17,11 @@ public class BossVida : MonoBehaviour
     [Header("Efecto de daño")]
     [SerializeField] private float duracionFlashDaño = 0.15f;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip sonidoMuerte;
+    [SerializeField] private float volumenMuerte = 1.5f;
+    [SerializeField] private float rango3D = 500f;        // ← ALCANCE SUPER AMPLIO
+
     private bool vulnerable = false;
     private bool enMovimiento = false;
     private bool muerto = false;
@@ -36,8 +41,7 @@ public class BossVida : MonoBehaviour
     }
 
     /// <summary>
-    /// Recibe daño cuando es vulnerable y no está en movimiento.
-    /// El UIManager se encargará de mostrar la barra actualizada automáticamente.
+    /// Recibe daño cuando es vulnerable.
     /// </summary>
     public virtual void TomarDaño(float cantidad)
     {
@@ -48,10 +52,8 @@ public class BossVida : MonoBehaviour
 
         Debug.Log($"{gameObject.name} recibió {cantidad} de daño. Vida restante: {vida}");
 
-        // Iniciar efecto visual de daño
         StartCoroutine(EfectoDañado());
 
-        // Verificar si murió
         if (vida <= 0)
         {
             Muerte();
@@ -68,6 +70,8 @@ public class BossVida : MonoBehaviour
         muerto = true;
         Debug.Log($"💀 {gameObject.name} ha muerto.");
 
+        ReproducirSonidoMuerte3D();  // ← NUEVO SISTEMA 3D
+
         // Detener movimiento físico
         if (rb != null)
         {
@@ -77,29 +81,47 @@ public class BossVida : MonoBehaviour
 
         // Detener ataques
         if (attackSystem != null)
-        {
             attackSystem.DesactivarAtaque();
-        }
 
-        // Cambiar sprite y color de muerte
+        // Cambiar sprite/colores
         if (spriteMuerte)
             sr.sprite = spriteMuerte;
+
         sr.color = colorDañado;
 
-        // Detener movimiento del controlador
+        // Detener AI del boss
         BossController controller = GetComponent<BossController>();
         if (controller != null)
-        {
             controller.DetenerJefeAlMorir();
-        }
 
-        // Destruir después de 5 segundos (quedará estático)
+        // Destruir luego
         Destroy(gameObject, 5f);
     }
 
-    /// <summary>
-    /// Efecto visual de flash rojo cuando recibe daño.
-    /// </summary>
+    /// 🔊 SONIDO DE MUERTE 3D - SUPER AMPLIO
+    private void ReproducirSonidoMuerte3D()
+    {
+        if (sonidoMuerte == null) return;
+
+        // Crear fuente de audio temporal en la escena
+        GameObject go = new GameObject("BossDeathSound");
+        go.transform.position = transform.position;
+
+        AudioSource a = go.AddComponent<AudioSource>();
+        a.clip = sonidoMuerte;
+        a.volume = volumenMuerte;
+
+        a.spatialBlend = 1f;           // 100% 3D
+        a.minDistance = 3f;
+        a.maxDistance = rango3D;        // ← SUPER RANGE: 500f
+        a.rolloffMode = AudioRolloffMode.Linear;
+
+        a.Play();
+
+        // destruir cuando acabe
+        Destroy(go, sonidoMuerte.length + 0.5f);
+    }
+
     private IEnumerator EfectoDañado()
     {
         if (sr)
@@ -111,31 +133,16 @@ public class BossVida : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Método interno para establecer si es vulnerable.
-    /// Llamado desde BossController.
-    /// </summary>
     private void SetVulnerableInterno(bool estado) => vulnerable = estado;
-
-    /// <summary>
-    /// Método interno para establecer si está en movimiento.
-    /// Llamado desde BossController.
-    /// </summary>
     private void SetMovimientoInterno(bool estado) => enMovimiento = estado;
 
-    // ==============================
-    // GETTERS (para UIManager)
-    // ==============================
-
+    // ----- GETTERS -----
     public int GetVida() => vida;
     public int GetVidaMaxima() => 20;
     public bool EsVulnerable() => vulnerable;
     public bool EstaEnMovimiento() => enMovimiento;
     public bool EstaMuerto() => muerto;
 
-    /// <summary>
-    /// Restaura la vida del jefe (útil para pruebas o power-ups del enemigo).
-    /// </summary>
     public void RestaurarVida(int cantidad)
     {
         if (muerto) return;
@@ -143,9 +150,6 @@ public class BossVida : MonoBehaviour
         Debug.Log($"{gameObject.name} restauró {cantidad} de vida. Vida actual: {vida}");
     }
 
-    /// <summary>
-    /// Restaura toda la vida del jefe.
-    /// </summary>
     public void RestaurarVidaCompleta()
     {
         if (muerto) return;

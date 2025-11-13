@@ -8,6 +8,9 @@ public class EnemyHealth : MonoBehaviour
     private float currentHealth;
     private bool isDead = false;
 
+    [Header("Sonido de muerte (arrastrar WAV/MP3)")]
+    [SerializeField] private AudioClip sonidoMuerte;
+
     private BarraVidaFlotante barraVida;
     private SpriteRenderer spriteRenderer;
     private Color colorOriginal;
@@ -25,7 +28,7 @@ public class EnemyHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
         barraVida = GetComponentInChildren<BarraVidaFlotante>();
-        
+
         if (barraVida != null)
         {
             barraVida.SetMaxHealth(maxHealth);
@@ -46,8 +49,6 @@ public class EnemyHealth : MonoBehaviour
 
         StartCoroutine(EfectoDano());
 
-        Debug.Log(gameObject.name + " recibió " + damage + " de daño. Vida: " + currentHealth);
-
         if (currentHealth <= 0)
         {
             Die();
@@ -66,14 +67,23 @@ public class EnemyHealth : MonoBehaviour
 
     void Die()
     {
+        if (isDead) return;
         isDead = true;
 
+        // 🔊 REPRODUCIR SONIDO (garantizado)
+        if (sonidoMuerte != null)
+        {
+            AudioSource.PlayClipAtPoint(sonidoMuerte, transform.position, 10f);
+        }
+
+        // eliminar barra
         if (barraVida != null)
         {
             Destroy(barraVida.gameObject);
         }
 
-        Destroy(gameObject);
+        // destruir enemigo
+        Destroy(gameObject, 0.2f);
     }
 
     public float GetCurrentHealth()

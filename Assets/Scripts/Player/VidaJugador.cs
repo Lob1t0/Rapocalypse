@@ -23,6 +23,11 @@ public class VidaJugador : MonoBehaviour
     private bool muerto = false;
     private Animator animator;
 
+    [Header("Audio (arrastrar WAV/MP3 directamente)")]
+    [SerializeField] private AudioClip sonidoDaño;
+    [SerializeField] private AudioClip sonidoMuerte;
+    private AudioSource audioSource;
+
     private void Start()
     {
         vidasActuales = vidasMax;
@@ -31,6 +36,11 @@ public class VidaJugador : MonoBehaviour
             uiManager = FindFirstObjectByType<UIManager>();
 
         animator = GetComponent<Animator>();
+
+        // 🔊 Crear AudioSource automáticamente si no existe
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+        audioSource.loop = false;
 
         ActualizarUI();
     }
@@ -56,18 +66,21 @@ public class VidaJugador : MonoBehaviour
         vidasActuales = Mathf.Max(vidasActuales - 1, 0);
         ActualizarUI();
 
-        // 🔥 ANIMACIÓN DE DAÑO (SOLO SI LE QUEDAN VIDAS)
+        // 🔥 Si aún no muere → animación de daño + sonido
         if (vidasActuales > 0)
         {
             if (animator)
                 animator.SetTrigger("Daño");
 
-            // 🔥 Volver a Idle después de EXACTAMENTE 1 segundo
+            // 🔊 reproducir sonido de daño
+            if (sonidoDaño)
+                audioSource.PlayOneShot(sonidoDaño);
+
             StartCoroutine(VolverIdleDespuesDeDanio());
             return;
         }
 
-        // 🔥 SI LLEGÓ A 0 → MUERTE
+        // 🔥 Muerte
         MorirJugador();
     }
 
@@ -75,7 +88,6 @@ public class VidaJugador : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
 
-        // 🔥 VOLVER A IDLE
         if (!muerto && animator)
             animator.Play("Idle");
     }
@@ -110,19 +122,22 @@ public class VidaJugador : MonoBehaviour
     private void MorirJugador()
     {
         if (muerto) return;
-        muerto = true;
 
-        Debug.Log("☠️ Jugador murió");
+        muerto = true;
 
         if (animator)
             animator.SetBool("Muerte", true);
 
-        // 🔥 Desactivar scripts del jugador
+        // 🔊 sonido de muerte
+        if (sonidoMuerte)
+            audioSource.PlayOneShot(sonidoMuerte);
+
+        // Desactivar scripts
         MonoBehaviour[] scripts = GetComponents<MonoBehaviour>();
         foreach (var s in scripts)
             if (s != this) s.enabled = false;
 
-        // 🔥 Congelar físicas
+        // Congelar físicas
         if (TryGetComponent<Rigidbody2D>(out var rb))
         {
             rb.linearVelocity = Vector2.zero;
@@ -130,12 +145,8 @@ public class VidaJugador : MonoBehaviour
             rb.bodyType = RigidbodyType2D.Kinematic;
         }
 
-        if (TryGetComponent<CharacterController>(out var cc))
-            cc.enabled = false;
-
         StartCoroutine(AnimacionMuerteYCongelar());
 
-        // 🔥 Reiniciar escena en EXACTAMENTE 4 segundos
         Invoke(nameof(ReiniciarEscena), 4f);
     }
 
@@ -147,7 +158,7 @@ public class VidaJugador : MonoBehaviour
         while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
             yield return null;
 
-        animator.enabled = false; // Congela el sprite
+        animator.enabled = false;
     }
 
     private void ReiniciarEscena()
@@ -162,7 +173,7 @@ public class VidaJugador : MonoBehaviour
     }
 
     // ==============================
-    // CURACIÓN
+    // GETTERS / CURACIÓN
     // ==============================
 
     public int GetVidaActual() => vidasActuales;

@@ -2016,9 +2016,9 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: d2d3d0e197807594085ee210b7538901, type: 3}
+  m_Resource: {fileID: 8300000, guid: b30351b9809ad594da6c42e8d09439c3, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -3192,6 +3192,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
+  sonidoMuerte: {fileID: 8300000, guid: cadfe1cf17c9ca244986598001be353b, type: 3}
 --- !u!58 &217427041
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5430,6 +5431,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
+  sonidoMuerte: {fileID: 8300000, guid: cadfe1cf17c9ca244986598001be353b, type: 3}
 --- !u!58 &423302097
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -6366,6 +6368,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3352221920110254247, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
+      propertyPath: sonidoDisparo
+      value: 
+      objectReference: {fileID: 8300000, guid: 687ee39890e1ce443bb540f497515e01, type: 3}
     - target: {fileID: 8135134250034846475, guid: dfd4bc34cd14ee14c9f87cf879b54837, type: 3}
       propertyPath: uiManager
       value: 
@@ -6658,6 +6664,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
+  sonidoMuerte: {fileID: 8300000, guid: cadfe1cf17c9ca244986598001be353b, type: 3}
 --- !u!114 &781431710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21481,6 +21488,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
+  sonidoMuerte: {fileID: 8300000, guid: cadfe1cf17c9ca244986598001be353b, type: 3}
 --- !u!58 &1384177928
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -22543,6 +22551,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
+  sonidoMuerte: {fileID: 8300000, guid: cadfe1cf17c9ca244986598001be353b, type: 3}
 --- !u!58 &1516190935
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -26410,6 +26419,8 @@ MonoBehaviour:
   posicionRespawn: {x: -17.39, y: -3.02, z: 0}
   textoVida: {fileID: 0}
   uiManager: {fileID: 1578648393}
+  "sonidoDa\xF1o": {fileID: 8300000, guid: d13fa4d77c5c64e438168d09c08b2071, type: 3}
+  sonidoMuerte: {fileID: 8300000, guid: 7b2492f9bead20e4f92f25816c9f6527, type: 3}
 --- !u!1 &1986365213
 GameObject:
   m_ObjectHideFlags: 0

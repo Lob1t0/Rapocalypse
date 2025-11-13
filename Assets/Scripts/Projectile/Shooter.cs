@@ -19,12 +19,17 @@ public class Shooter : MonoBehaviour
     [Header("Vibración (máxima potencia)")]
     [SerializeField] private float duracionVibracion = 0.5f;
 
-    // --- Cámara ---
+    // Cámara
     [Header("Camera Shake")]
-    [SerializeField] private Camara camaraShake; // arrástrala en el Inspector si quieres
+    [SerializeField] private Camara camaraShake;
     [SerializeField] private float shakeDuracion = 0.10f;
     [SerializeField] private float shakeAmplitud = 0.18f;
     [SerializeField] private float shakeFrecuencia = 32f;
+
+    // 🔊 AUDIO
+    [Header("Audio (arrastrar WAV/MP3)")]
+    [SerializeField] private AudioClip sonidoDisparo;
+    private AudioSource audioSource;
 
     private float fireCooldown = 0f;
     private InputAction attackAction;
@@ -34,9 +39,18 @@ public class Shooter : MonoBehaviour
         if (playerInput == null)
             playerInput = GetComponent<PlayerInput>();
 
-        // Si no está asignada, intenta encontrar la cámara principal
+        // Si no está la cámara, intentar encontrarla automáticamente
         if (camaraShake == null && Camera.main != null)
             camaraShake = Camera.main.GetComponent<Camara>();
+    }
+
+    private void Start()
+    {
+        // 🔊 Crear el AudioSource automáticamente
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+        audioSource.spatialBlend = 0;   // 0 = 2D 
+        audioSource.loop = false;
     }
 
     private void OnEnable()
@@ -92,6 +106,7 @@ public class Shooter : MonoBehaviour
 
         Vector2 dir = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
 
+        // Crear o tomar una bala del pool
         GameObject bala = ProjectilePool.Instance.GetProjectile(
             firePoint.position,
             Quaternion.identity,
@@ -100,17 +115,20 @@ public class Shooter : MonoBehaviour
 
         bala.GetComponent<Proyectil>().Lanzar(dir, proyectilVelocidad);
 
+        // 🔊 Reproducir sonido
+        if (sonidoDisparo != null)
+            audioSource.PlayOneShot(sonidoDisparo);
+
         // Vibración del mando
         ActivarVibracionFuerte();
 
-        // Sacudir cámara
+        // Camera shake
         if (camaraShake != null)
         {
             camaraShake.Shake(shakeDuracion, shakeAmplitud, shakeFrecuencia);
         }
         else
         {
-            // Intento tardío (por si la cámara aún no estaba lista)
             var cam = Camera.main ? Camera.main.GetComponent<Camara>() : null;
             if (cam != null) cam.Shake(shakeDuracion, shakeAmplitud, shakeFrecuencia);
         }
