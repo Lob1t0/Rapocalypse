@@ -12,8 +12,8 @@ public class Camara : MonoBehaviour
     [Header("Límites de la cámara")]
     [SerializeField] private float limiteMinX = -100f;
     [SerializeField] private float limiteMaxX = 100f;
-    private float limiteMinY;
-
+    [SerializeField] private float limiteMinY = -15f; // 🔑 AHORA EDITABLE DESDE INSPECTOR
+    
     [Header("Ajuste altura límite")]
     public float offsetaltura = 0f;
 
@@ -37,8 +37,6 @@ public class Camara : MonoBehaviour
     private void Start()
     {
         camara = Camera.main;
-        float alturaVisible = camara.orthographicSize;
-        limiteMinY = transform.position.y - alturaVisible + offsetaltura;
     }
 
     private void LateUpdate()
@@ -47,20 +45,17 @@ public class Camara : MonoBehaviour
 
         Vector3 posicionDeseada = jugador.position + offset;
         posicionDeseada.x = Mathf.Clamp(posicionDeseada.x, limiteMinX, limiteMaxX);
-        posicionDeseada.y = Mathf.Max(posicionDeseada.y, limiteMinY);
+        posicionDeseada.y = Mathf.Max(posicionDeseada.y, limiteMinY); // ✅ AHORA SIGUE AL JUGADOR
 
         Vector3 suavizada = Vector3.SmoothDamp(transform.position, posicionDeseada, ref velocidad, suavizado);
-
         Vector3 final = suavizada + shakeOffset;
+
         if (limitarYConShake)
             final.y = Mathf.Max(final.y, limiteMinY);
 
         transform.position = final;
     }
 
-    /// <summary>
-    /// Sacude la cámara durante "duracion" seg con "amplitud" (unidades mundo) y "frecuencia" (osc/s).
-    /// </summary>
     public void Shake(float duracion = 0.15f, float amplitud = 0.80f, float frecuencia = 45f)
     {
         if (shakeRoutine != null) StopCoroutine(shakeRoutine);
@@ -75,7 +70,6 @@ public class Camara : MonoBehaviour
             float nx = (Mathf.PerlinNoise(perlinSeedX, Time.time * frecuencia) - 0.5f) * 2f;
             float ny = (Mathf.PerlinNoise(perlinSeedY, Time.time * frecuencia) - 0.5f) * 2f;
             shakeOffset = new Vector3(nx * amplitud, ny * amplitud, 0f);
-
             t += Time.deltaTime;
             yield return null;
         }

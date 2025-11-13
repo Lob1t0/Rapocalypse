@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 8170803153929807241}
   - component: {fileID: 6746169846171814048}
   - component: {fileID: 3352221920110254247}
+  - component: {fileID: 5110485205628731564}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -404,6 +405,27 @@ MonoBehaviour:
   shakeDuracion: 0.1
   shakeAmplitud: 0.18
   shakeFrecuencia: 32
+  sonidoDisparo: {fileID: 8300000, guid: 687ee39890e1ce443bb540f497515e01, type: 3}
+--- !u!114 &5110485205628731564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8218277991504807654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f0319abe300bb24387e6bfd8082ba0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vidasMax: 4
+  vidasActuales: 0
+  limiteY: -8.43
+  posicionRespawn: {x: -17.39, y: -3.02, z: 0}
+  textoVida: {fileID: 0}
+  uiManager: {fileID: 0}
+  "sonidoDa\xF1o": {fileID: 8300000, guid: d13fa4d77c5c64e438168d09c08b2071, type: 3}
+  sonidoMuerte: {fileID: 8300000, guid: 7b2492f9bead20e4f92f25816c9f6527, type: 3}
 --- !u!1 &8566633976739193178
 GameObject:
   m_ObjectHideFlags: 0
