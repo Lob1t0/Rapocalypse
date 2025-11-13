@@ -17,6 +17,21 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Infierno/JefeInfierno.unity
     guid: fa27174744f7c504bad460448de04c8c
+  - enabled: 1
+    path: Assets/Scenes/industrial.unity
+    guid: c1489c311b9af6544914082ea695d086
+  - enabled: 1
+    path: Assets/Scenes/calle.unity
+    guid: 1d22f767ee16e0640a2dfd74611505eb
+  - enabled: 1
+    path: Assets/Scenes/JefeFinalCalle.unity
+    guid: fd1b7a0922163bd429c0c1a86c137539
+  - enabled: 1
+    path: Assets/Scenes/JefeFinalInfierno.unity
+    guid: f81a4c912280b3e43838dc263d83b693
+  - enabled: 1
+    path: Assets/Scenes/JefeFinallindustrial.unity
+    guid: e92b11dbbbee9ba42be27a26c89e275b
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

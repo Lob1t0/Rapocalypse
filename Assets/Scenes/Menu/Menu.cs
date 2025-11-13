@@ -91,7 +91,7 @@ public class MenuController : MonoBehaviour
     // === ACCIONES DE LOS BOTONES ===
     public void Jugar()
     {
-        SceneManager.LoadScene("Infierno");
+        SceneManager.LoadScene("calle");
     }
 
     public void Controles()
