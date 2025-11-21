@@ -69,6 +69,7 @@ public class BossVida : MonoBehaviour
 
         muerto = true;
         Debug.Log($"💀 {gameObject.name} ha muerto.");
+        SceneManager.LoadScene("industrial");
 
         ReproducirSonidoMuerte3D();  // ← NUEVO SISTEMA 3D
 
